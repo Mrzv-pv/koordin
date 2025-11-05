@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Юридическая помощь | Фонд соотечественников</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .accordion-item { transition: all 0.3s ease; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .accordion-item.active > .accordion-content { max-height: 2000px; /* large enough to show all content */ }
+        .nav-link { touch-action: manipulation; }
+        .nav-link::after { content: ''; display: block; width: 0; height: 2px; background: #3b82f6; transition: width 0.3s; }
+        .nav-link:hover::after { width: 100%; }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-600"><a href="index.html">Фонд помощи</a></div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="legalhelp.html" class="nav-link text-gray-800 hover:text-blue-600 font-medium">Юридическая помощь</a>
+                    <a href="contacts.html" class="nav-link text-gray-800 hover:text-blue-600 font-medium">Контакты</a>
+                    <!--<a href="#" class="nav-link text-gray-800 hover:text-blue-600 font-medium">Вопросы и ответы</a>-->
+                    <a href="about.html" class="nav-link text-gray-800 hover:text-blue-600 font-medium">О фонде</a>
+                </div>
+            </div>
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="legalhelp.html" class="block py-4 text-gray-800 hover:text-blue-600" style="padding-left: 16px; padding-right: 16px;">Юридическая помощь</a>
+                <a href="contacts.html" class="block py-2 text-gray-800 hover:text-blue-600">Контакты</a>
+                <!--<a href="#" class="block py-2 text-gray-800 hover:text-blue-600">Вопросы и ответы</a>-->
+                <a href="about.html" class="block py-2 text-gray-800 hover:text-blue-600">О фонде</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Юридическая помощь: Вопросы и ответы</h1>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-700 max-w-2xl mx-auto">Здесь вы найдете ответы на самые частые вопросы по юридическим вопросам в Словении.</p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <!-- FAQ Accordion -->
+                <!-- BEGIN FAQ CONTENT -->
+                <div id="faq-accordion">
+                    <!-- Category: ВНЖ и миграция -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🏠 ВНЖ и миграция</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🏠 ВНЖ, гражданство и миграционные вопросы:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Основания для получения ВНЖ</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Основания для получения вида на жительство в Республике Словения: <br> • Трудоустройство<br> • Воссоединение с членами семьи, уже проживающими в Словении<br> • Учёба в аккредитованном учебном заведении<br> • Предпринимательская деятельность<br> • Наличие словенских корней<br> • Реже используемые основания: научная деятельность, волонтерство, просветительская деятельность, гуманитарные причины</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>ВНЖ без трудоустройства</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Словенское законодательство не предусматривает ВНЖ только на основании финансовой независимости (в отличие от некоторых других стран ЕС). Однако можно попытаться получить ВНЖ через регистрацию самозанятости или бизнеса, но при этом нужно доказать активность.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Основания для ПМЖ/гражданства</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Постоянное место жительства (ПМЖ) — после 5 лет непрерывного легального проживания (при соблюдении условий)<br>Гражданство Словении — обычно через 10 лет, включая 5 лет с ПМЖ</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Двойное гражданство РФ и Словении</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Словения официально требует отказа от прежнего гражданства</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Возможности ВНЖ Словении</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">ВНЖ Словении не даёт автоматического права жить или работать в других странах ЕС.<br>Он позволяет:<br> • Свободно передвигаться по шенгенской зоне (до 90 дней в течение 180 дней)<br> • Работать и жить только в Словении, если не получено отдельное разрешение в другой стране ЕС<br> • После получения ПМЖ ЕС (не национального ПМЖ) возможно подавать заявление на ВНЖ в других странах ЕС по упрощённой процедуре, но это не даёт полного права на переезд без новых оснований</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Трудовое право -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>💼 Трудовое право</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">💼 Трудовое право и трудоустройство:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Возможность официальной работы</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Да, гражданин РФ может официально устроиться на работу.. Чтобы работать легально, необходимо:<br> • Получить единое разрешение на проживание и работу (enotno dovoljenje za prebivanje in delo)<br>Это разрешение оформляется по инициативе работодателя или самостоятельно — если вы регистрируете ИП (s.p.)<br> • Официальная вакансия должна быть зарегистрирована в службе занятости (ZRSZ), и приоритет имеют граждане ЕС</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Самозанятость (ИП)</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Гражданин РФ может зарегистрироваться как samostojni podjetnik (s.p.), но:<br> • Это возможно только после проживание в течение не менее года в Словении на основании другого ВНЖ <br> • Требуется подтвердить активную предпринимательскую деятельность и достаточный доход (обычно не менее 1 500–2 000 € в месяц)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>В случае потери работы</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Если вы теряете работу, вы теряете основание для ВНЖ, но:<br> • Закон предоставляет срок до 30 дней на поиск нового работодателя<br> • В некоторых случаях возможно изменение основания ВНЖ (например, на учебу или бизнес)<br> • При наличии долгосрочного пребывания (например, ПМЖ) — потеря работы не влияет на легальность проживания</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Необходимость подтверждения диплома</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Это зависит от вида деятельности:<br> • Для регулируемых профессий (врачи, юристы, архитекторы, учителя и др.) требуется признание образования (nostrifikacija) или профессиональная аккредитация<br> • Для нерегулируемых профессий подтверждение квалификации может не требоваться, особенно если работодатель готов принять вас без формального признания<br> • Процедуру признания проводит ENIC-NARIC центр при Министерстве образования, и она может занять от 1 до 6 месяцев</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Права и гарантии наемных работников</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">У наемных работников есть следующие права:<br> • Право на оплачиваемый отпуск (минимум 4 недели)<br> • Право на больничный, декрет, защиту от увольнения<br> • Право на выплату за сверхурочную работу, ночную смену и пр.<br> • Защита от дискриминации по гражданству<br> • Обязательная регистрация в системе медицинского и пенсионного страхования.<br>Письменный трудовой договор должен содержать условия:  зарплата, часы, отпуск и др., испытательный срок, увольнение, неполную занятость и коллективные договоры отрасли</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Налоги -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🧾 Налоги</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🧾 Налоги и финансы:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Уплата налогов гражданам РФ</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Если гражданин России стал налоговым резидентом Словении, то он обязан платить налоги в Словении. Налоговое резидентство Словении приобретается в следующих случаях:<br> • Если иностранный гражданин находится в Словении 183 дня в течение календарного года или<br> • Если центр жизненных интересов иностранного гражданина (семья, жильё, экономическая деятельность) находится в Словении.<br>Налоговое резидентство означает, что вы обязаны декларировать все свои доходы, включая иностранные (например, аренда квартиры в РФ или дивиденды из России).</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Доходы из России</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Доходы из России облагаются налогом в Словении, если такой гражданин — налоговый резидент Словении, его доходы от источников в России подлежат декларированию.<br>Между Словенией и РФ заключено соглашение об избежании двойного налогообложения, но:<br> • Доходы всё равно нужно декларировать<br> • Уплаченные в РФ налоги могут быть засчитаны при расчёте словенского налога, но не всегда полностью<br>Есть особенности по разным видам доходов (например, аренда vs. дивиденды)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Самозанятость (ИП)</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Налоговая база по доходам от деятельности определяется одним из двух способов:<br> • с учетом фактических доходов и фактических расходов или<br> • с учетом фактических доходов и нормативных расходов.<br>Форма определения налоговой базы может быть изменена только с новым налоговым годом.<br>Также обязательны:<br> • Взносы в пенсионный и медицинский фонды<br> • НДС-регистрация, если оборот превышает 50 000 €</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Налоги наемных работников</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Из зарплаты удерживаются:<br> • Подоходный налог (dochodnina) по прогрессивной шкале: от ~16% до 45%<br> • Социальные взносы (пенсия, медстрахование) — около 22% от брутто-зарплаты<br> • Работодатель дополнительно платит ещё около 16% сверху<br>Зарплата указывается в брутто, чистая сумма на руки будет на ~20–25% ниже.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Банковский счёт в Словении</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Граждане РФ с видом на жительство в Словении могут открыть личный счёт в любом крупном банке.<br>Обычно потребуются:<br> • Паспорт<br> • ВНЖ (карта или решение)<br> • Доказательство адреса в Словении<br> • Иногда — налоговый номер (davčna številka)<br><br>Некоторые банки могут дополнительно запрашивать:<br> • Подтверждение источника доходов<br> • Декларацию о налоговом резидентстве<br>Счёт можно открыть только лично, в отделении. Для нерезидентов условия сложнее: не все банки открывают счёт, и часто требуется дополнительная проверка.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Медицина -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🏥 Медицина</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🏥 Медицина и страховки:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Необходимость медицинской страховки</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4"> Наличие медицинской страховки — обязательное условие для получения и продления вида на жительство.<br>На начальном этапе обычно требуется либо договор с частной страховой компанией, действующий на территории Словении, доказательство включения в систему государственного страхования (Obvezno zdravstveno zavarovanje) — чаще всего при трудоустройстве или как самозанятый</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Обязательное и добровольное страхование</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Обязательное страхование (osnovno zavarovanje) покрывает базовую медицинскую помощь, но с частичной доплатой за многие услуги.<br>Дополнительное страхование (dopolnilno zavarovanje) покрывает эту доплату и фактически делает услуги бесплатными при обращении в государственную систему<br>Почти все работающие и резиденты оформляют оба вида, иначе можно получить внезапные счета даже за базовое лечение.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Оплата страховки</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Обязательное страхование:<br> • Работодатель платит за вас, если вы трудоустроены<br> • Самозанятый оплачивает сам (~55–60 € в месяц)<br>Дополнительное страхование:<br> • Стоит около 35–45 € в месяц (в 2025 году, зависит от компании)<br> • Оплачивает застрахованный.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Система семейного врача</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Да, в Словении действует система семейных врачей (osebni zdravnik):<br> • Нужно выбрать врача, приписаться к нему (через государственную поликлинику или частную с договором с ЗОИС)<br> • К нему обращаются при первых симптомах, для направления к узким специалистам и получения рецептов<br> • Без направления визит к узкому специалисту не оплачивается<br> • Срочная помощь (неотложка, Urgenca) доступна без записи, но в экстренных случаях</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Бесплатная медицинская помощь</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Обладатель ВНЖ Словении  имеет право на бесплатную медицинскую помощь в Словении, но только если они:<br> • Зарегистрированы в обязательной системе страхования<br> • Имеете дополнительную страховку (или готовы оплачивать услуги частично из своего кармана)<br> • Если у вас только частная страховка без подключения к системе ZZZS (Институт медицинского страхования Словении), то медицинская помощь будет платной или покрываться частично — особенно это важно в экстренных случаях и при госпитализации.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Образование -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🏫 Образование</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🏫 Образование и детские сады:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Бесплатные детский сад или школа</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Дети с ВНЖ в Словении имеют право на доступ к государственным детским садам и школам наравне с гражданами.<br>Образование в школах — бесплатное, но за детские сады взимается частичная плата, рассчитываемая исходя из доходов семьи.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Необходимость знания языка</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Нет, знание языка не обязательно при поступлении.<br>Для адаптации детей:<br> • В школах предусмотрены вводные адаптационные программы, часто с отдельными занятиями по словенскому языку<br> • Учителя обучены работать с детьми-иностранцами<br> • В детских садах используется погружение в языковую среду.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Стоимость детского сада</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Стоимость детского сада различается в зависимости от возраста детей и от города (цена устанавливается муниципалитетом). Все налоговые резиденты Словении имеют скидку в 23% от стоимости сада (поэтому родители, имеющие студенческий ВНЖ и не являющиеся налогоплательщиками, такую скидку не получают). В зависимости от доходов семьи может быть предоставлена субвенция (компенсация расходов) на детский сад.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Школьное образование</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">По закону Республики Словении, все дети должны в обязательном порядке получить основное общее образование – окончить основную школу (словенск. Osnovna šola). Обучение – бесплатное как для граждан Словении, так и для детей иностранцев. Учёба в основной школе продолжается 9 лет – в возрасте с 6 до 15 лет. По окончании 6-го и 9-го классов школьников ожидает Национальная проверка знаний (словенск. Nacionalno preverjanje znanja). По окончании основной школы выпускники поступают в средние школы на основании оценок 7, 8 и 9 классов</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Русско-язычные школы, детские сады</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Полноценных русскоязычных школ с аккредитацией РФ в Словении нет, но доступны:<br> • Русские воскресные школы, культурные и образовательные центры (например, при посольстве РФ или в Любляне)<br> • Частные двуязычные детские сады и кружки (словенский + русский/английский)<br> • Некоторые международные школы (например, с английским языком обучения), принимают детей-иностранцев</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Жильё -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🏘 Жильё</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🏘 Аренда, жильё, коммунальные услуги:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Регистрация по месту жительства</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Да, регистрация по адресу (prijava prebivališča) обязательна:<br> • Для ВНЖ, получения налогового номера, доступа к медицине и школам<br>Процедура:<br> • Подаётся в административное управление<br> • Нужны: договор аренды, паспорт, подтверждение собственности владельца, ВНЖ<br> • Без регистрации - проблемы с продлением ВНЖ и доступом к госуслугам</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Страховой взнос (депозит)</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Обычно равен 2-3 месяцам арендной платы<br> • Гарантия прав арендодателя при нарушениях<br> • Возвращается арендатору после окончания аренды<br> • Использование для оплаты последних месяцев возможно по письменному соглашению</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Состав арендной платы</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Арендная плата включает только стоимость жилья<br> • Коммунальные платежи оплачивает арендатор отдельно<br> • При подписании договора вносится депозит (2-3 месячных платежа)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Дополнительные платежи</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Управляющая компания (upravnik) взимает за:<br> • Обслуживание общих зон (лестницы, лифты, крыша)<br> • Вывоз мусора<br> • Страховки и ремонтные фонды<br>Ежемесячный счёт может включать:<br> • Электричество, воду, отопление<br> • Обслуживание дома<br> • Страховку здания</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Коммунальные платежи</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Услуги:<br> • Электричество, вода, отопление, вывоз мусора<br> • Интернет, ТВ, домофон<br>Оплата:<br> • Ежемесячные счета<br> • Через интернет-банк, QR-код или на почте<br> • Часто - автоматические платежи (trajnik)<br>Важно: зимой отопление может стоить 150-250€/мес в старых домах</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Автомобиль -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span> Автомобиль</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🚗 Автомобиль, водительские права, штрафы:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Действие российских прав</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Российские права + МВУ действуют 1 год после получения ВНЖ<br> • После этого требуются словенские права</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Обмен водительских прав</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Требуется сдача экзамена<br> • Автошкола не обязательна, но рекомендуется<br> • Соглашений с РФ об упрощённом обмене нет</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Покупка автомобиля</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Для владельца ВНЖ:<br> • Требуются: ВНЖ, EMŠO, зарегистрированный адрес<br> • После покупки: обязательная регистрация (prva registracija)<br> • Обязательное оформление страховки (ОСАГО + каско по желанию)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Система штрафов</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Штрафные баллы за нарушения (18 баллов = лишение прав)<br> • Штрафы приходят по почте или выдаются на месте<br> • 50% скидка при оплате в течение 8 дней<br> • Нарушения фиксируются камерами (скорость, светофоры)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Платные дороги</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Требуется электронная виньетка (e-vinjeta)<br> • Продаётся онлайн и на АЗС<br> • Годовая: ~117€, месячная: ~32€ (легковые <3.5т)<br> • Штраф за отсутствие - до 300€<br> • Контроль через камеры и полицию</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Суды, полиция -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>⚖️ Суды, полиция</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">⚖️ Суды, полиция, административные дела:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Остановка полицией</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Полиция обязана объяснить причину (можно на английском)<br> • Право на переводчика при допросе<br> • Право не подписывать непонятные документы<br> • Возможность обжалования действий полиции</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Обжалование решений</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Сначала - внутриведомственная жалоба (pritožba)<br> • Затем - административный суд<br> • Срок подачи: обычно 15 дней с получения решения<br> • Требуется словенский язык (переводчик/юрист)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Участие адвоката</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• В гражданских/административных делах можно без адвоката<br> • В Верховном суде адвокат обязателен<br> • При незнании языка рекомендуется адвокат/переводчик</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Оформление документов</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Upravna enota (UE): прописка, ВНЖ, EMŠO<br> • FURS (налоговая): налоговый номер, декларации<br> • Policija: регистрация иностранцев, заявления о преступлениях</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Помощь при преступлении</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Немедленно звонить 113 (полиция)<br> • Права:<br>- Подать заявление (kazenska ovadba)<br>- Получить переводчика и консультацию<br>- Защита как потерпевшего</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Взаимодействие с органами власти -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🏛 Взаимодействие с органами власти</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🏛 Взаимодействие с органами власти и перевод документов:</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Легализация документов</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Обязательно:<br> • Апостиль на российских документах (свидетельства, дипломы)<br> • Перевод у судебного переводчика (sodni tolmač)<br>Без этого документы не принимаются даже для ВНЖ</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Перевод документов</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Паспорт как удостоверение личности не переводится<br> • Нотариальные копии и доверенности требуют:<br>- Апостиль/консульское удостоверение<br>- Перевод на словенский у судебного переводчика<br> • Проще оформить доверенность у словенского нотариуса</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Получение документов</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Upravna enota (UE): ВНЖ, EMŠO, справки<br> • FURS: налоговый номер (davčna številka)<br> • Zdravstvena zavarovalnica: медстраховка<br>Запись через eUprava.gov.si или телефон</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Язык общения</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Официальный язык - словенский<br> • В крупных городах часто говорят по-английски (не обязаны)<br> • Для официальных процедур нужен переводчик<br> • Онлайн-формы только на словенском</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Запись на приём</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">Требуется в:<br> • Upravna enota (ВНЖ, регистрация)<br> • FURS, Zdravstvena zavarovalnica, Центры занятости<br>Способы записи:<br> • eUprava.gov.si<br> • Телефон/email отделения<br> • Онлайн-формы на сайтах учреждений</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Срочная помощь -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>🆘 Срочная помощь</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">🆘 Срочная помощь (угрозы, насилие, кризисные ситуации):</div>
+                            <div class="space-y-4">
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Куда обращаться</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Полиция: 113<br> • Скорая: 112<br> • Центры социальной работы и кризисные центры<br>Помощь предоставляется всем, независимо от ВНЖ и языка</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Домашнее насилие</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Срочно звонить 113 или в кризисный центр<br> • Можно получить:<br>- Временное убежище<br>- Психологическую/юридическую помощь<br>- Защиту персональных данных (скрытый адрес)</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header w-full text-left flex justify-between items-center py-2 font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                                        <span>Оплата срочной помощи</span>
+                                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                                    </button>
+                                    <div class="accordion-content px-2">
+                                        <p class="text-gray-700 pb-4">• Экстренная медпомощь - без страховки, но потом счёт<br> • При наличии словенской страховки - всё покрывается<br> • Психологическая помощь - бесплатна<br> • Право на неотложную помощь есть всегда при угрозе жизни</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category: Связаться -->
+                    <div class="accordion-item mb-6 border-b border-gray-200 pb-4">
+                        <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-bold text-xl text-gray-800 hover:text-blue-600 focus:outline-none">
+                            <span>📞 Связаться</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content px-2">
+                            <div class="text-gray-700 mb-4">📞 Связаться с юристом / задать вопрос / записаться на консультацию:</div>
+                            <div class="text-gray-700">Для связи с юристом используйте контакты ниже или перейдите в Telegram-бот.</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END FAQ CONTENT -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacts & Telegram Section -->
+    <section class="py-20 bg-blue-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 flex flex-col md:flex-row items-center">
+                <div class="md:w-2/3 mb-8 md:mb-0 md:pr-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Контакты</h2>
+                    <div class="w-20 h-1 bg-blue-600 mb-6"></div>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone-alt text-blue-600 mr-4"></i>
+                            <span class="text-gray-800">+386 40 854 321</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-blue-600 mr-4"></i>
+                            <span class="text-gray-800">team@helph.si</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-600 mr-4"></i>
+                            <span class="text-gray-800">Vodovodna cesta 100, 1000 Ljubljana</span>
+                        </div>
+                    </div>
+                    <a href="https://calendly.com/helph/new-meeting" target="_blank" class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 mb-4">
+                        <i class="fas fa-calendar-alt mr-2"></i> Записаться на онлайн-консультацию
+                    </a>
+                    <a href="https://t.me/SloveniaLegal_bot" target="_blank" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                        <i class="fab fa-telegram-plane mr-2"></i> Перейти в Telegram-бот
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12 border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">Фонд помощи</div>
+                    <p class="text-gray-600">© 2024 Фонд помощи соотечественникам в Словении. Все права защищены.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Политика конфиденциальности</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Условия использования</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Контакты</a>
+                </div>
+                <button id="back-to-top" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Prevent touch delay
+        document.addEventListener('touchstart', function() {}, true);
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        // Accordion functionality (robust event delegation)
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Accordion script loaded');
+            // Main accordion
+            document.querySelectorAll('#faq-accordion > .accordion-item > .accordion-header').forEach(header => {
+                header.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parent = header.closest('.accordion-item');
+                    // Close all sibling main accordions
+                    parent.parentElement.querySelectorAll(':scope > .accordion-item').forEach(item => {
+                        if (item !== parent) {
+                            item.classList.remove('active');
+                            const icon = item.querySelector('.accordion-header i');
+                            if (icon) icon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                    parent.classList.toggle('active');
+                    const icon = header.querySelector('i');
+                    if (parent.classList.contains('active')) {
+                        icon.style.transform = 'rotate(180deg)';
+                    } else {
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+            // Sub-accordion (event delegation for all nested accordions)
+            document.querySelectorAll('#faq-accordion .accordion-content').forEach(group => {
+                group.addEventListener('click', function(e) {
+                    const header = e.target.closest('.accordion-header');
+                    if (!header) return;
+                    const parent = header.closest('.accordion-item');
+                    // Only handle sub-accordion, not main
+                    if (!parent || parent.parentElement === document.getElementById('faq-accordion')) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Close all sibling sub-accordions
+                    parent.parentElement.querySelectorAll(':scope > .accordion-item').forEach(item => {
+                        if (item !== parent) {
+                            item.classList.remove('active');
+                            const icon = item.querySelector('.accordion-header i');
+                            if (icon) icon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                    parent.classList.toggle('active');
+                    const icon = header.querySelector('i');
+                    if (parent.classList.contains('active')) {
+                        icon.style.transform = 'rotate(180deg)';
+                    } else {
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+        });
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html> 

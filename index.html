@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Юридическая помощь в Словении | Фонд соотечественников</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* iOS specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+        }
+        /* Prevent zoom on input focus */
+        input, textarea, select {
+            font-size: 16px;
+        }
+        .hero-gradient {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .accordion-item {
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 300px;
+        }
+        
+        .map-container {
+            height: 400px;
+            width: 100%;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link {
+            touch-action: manipulation;
+        }
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-600">Фонд помощи</div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="legalhelp.html" class="nav-link text-gray-800 hover:text-blue-600 font-medium">Юридическая помощь</a>
+                    <a href="contacts.html" class="nav-link text-gray-800 hover:text-blue-600 font-medium">Контакты</a>
+                    <a href="about.html" class="nav-link text-gray-800 hover:text-blue-600 font-medium">О фонде</a>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="legalhelp.html" class="block py-4 text-gray-800 hover:text-blue-600" style="padding-left: 16px; padding-right: 16px;">Юридическая помощь</a>
+                <a href="contacts.html" class="block py-2 text-gray-800 hover:text-blue-600">Контакты</a>
+                <a href="about.html" class="block py-2 text-gray-800 hover:text-blue-600">О фонде</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-32 px-6">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Помощь соотечественникам</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                Наш фонд помогает соотечественникам в Словении, которые столкнулись с юридическими проблемами. 
+                Мы предоставляем поддержку и консультации, чтобы каждый мог получить доступ к юридическим ресурсам.
+            </p>
+            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-block" style="min-width: 200px; min-height: 48px; display: inline-flex; align-items: center; justify-content: center;">
+                Получить помощь
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 md:pr-12">
+                    <div class="bg-blue-50 p-8 rounded-xl shadow-md">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">О фонде</h2>
+                        <div class="w-20 h-1 bg-blue-600 mb-6"></div>
+                        <p class="text-gray-700 mb-6">
+                            Мы помогаем соотечественникам в Словении, оказывая юридическую поддержку и предоставляя контакты опытных юристов. 
+                            Наша цель — поддержка и защита прав русскоязычных граждан.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Бесплатные консультации</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Поддержка на всех этапах</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Опытные юристы</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://static.tildacdn.info/tild6363-3739-4961-a536-643633363337/photo-1582790327915-.jpg" 
+                         alt="Legal assistance" class="rounded-xl shadow-lg w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20 bg-blue-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Наши услуги</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-700 max-w-2xl mx-auto">
+                    Предлагаем услуги для разбора юридических вопросов: консультации, помощь в поиске адвоката и информацию о правовой системе.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-600 text-4xl mb-6">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Юридические консультации</h3>
+                    <p class="text-gray-700">
+                        Консультации по вопросам иммиграционного и гражданского права, а также помощь в оформлении документов.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-600 text-4xl mb-6">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Поиск юриста</h3>
+                    <p class="text-gray-700">
+                        Помогаем найти проверенных юристов, специализирующихся на различных областях права в Словении.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-600 text-4xl mb-6">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Информация о правовой системе</h3>
+                    <p class="text-gray-700">
+                        Предоставляем актуальную информацию о правовой системе Словении и особенностях местного законодательства.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Часто задаваемые вопросы</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                    <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-medium text-lg text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Какие виды юридических проблем вы помогаете решать?</span>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content px-2">
+                        <p class="text-gray-700 pb-4">
+                            Мы предоставляем помощь в вопросах иммиграционного права, трудовых споров, семейного права и других юридических проблем, 
+                            с которыми сталкиваются соотечественники в Словении.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                    <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-medium text-lg text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Кто может получить помощь от вашего фонда?</span>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content px-2">
+                        <p class="text-gray-700 pb-4">
+                            Помощь предоставляется соотечественникам, находящимся в Словении, которые столкнулись с юридическими трудностями 
+                            и нуждаются в квалифицированной поддержке.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                    <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-medium text-lg text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Как можно получить консультацию юриста?</span>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content px-2">
+                        <p class="text-gray-700 pb-4">
+                            Для получения консультации необходимо заполнить заявку на нашем сайте или связаться с нами по указанным контактам.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
+                    <button class="accordion-header w-full text-left flex justify-between items-center py-4 font-medium text-lg text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Предоставляете ли вы помощь бесплатно?</span>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content px-2">
+                        <p class="text-gray-700 pb-4">
+                            В зависимости от сложности дела и финансового положения обратившегося мы можем предложить бесплатные или льготные 
+                            условия консультаций и представительства в суде.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-blue-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Отзывы</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="testimonial-card bg-white p-8 rounded-xl shadow-md transition duration-300">
+                    <div class="flex items-center mb-6">
+                        <img src="https://static.tildacdn.info/tild6261-6133-4462-a237-323566373436/image_-5.png" alt="Анна Смирнова" class="w-20 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Иван Петров</h4>
+                            <p class="text-gray-600 text-sm">Получил консультацию по иммиграционным вопросам</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">
+                        "Благодаря фонду я смог разобраться в сложной юридической ситуации и защитить свои права. Очень благодарен за поддержку и помощь."
+                    </p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-8 rounded-xl shadow-md transition duration-300">
+                    <div class="flex items-center mb-6">
+                        <img src="https://static.tildacdn.info/tild3231-6639-4561-a138-313962336662/image_-4.png" alt="Сергей Николаев" class="w-20 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Сергей Николаев</h4>
+                            <p class="text-gray-600 text-sm">Получил помощь в оформлении документов</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">
+                        "Фонд помог мне найти хорошего юриста и оформить все необходимые документы для получения гражданства. Очень рад, что обратился за помощью."
+                    </p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-8 rounded-xl shadow-md transition duration-300">
+                    <div class="flex items-center mb-6">
+                        <img src="https://static.tildacdn.info/tild3330-3062-4064-b534-363535616338/image_208.png" alt="Анна Смирнова" class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Анна Смирнова</h4>
+                            <p class="text-gray-600 text-sm">Получила юридическую консультацию</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">
+                        "Я очень благодарна фонду за помощь в решении моего вопроса. Сотрудники были очень внимательны и доброжелательны."
+                    </p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-8 rounded-xl shadow-md transition duration-300">
+                    <div class="flex items-center mb-6">
+                        <img src="https://static.tildacdn.info/tild3336-3261-4135-b032-316138353338/image_-3.png" alt="Мария Иванова" class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Мария Иванова</h4>
+                            <p class="text-gray-600 text-sm">Получила поддержку в юридическом вопросе</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">
+                        "Фонд помог мне разобраться в сложной ситуации и найти правильное решение. Очень рада, что обратилась за помощью."
+                    </p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto bg-blue-50 rounded-xl shadow-md overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Нужна юридическая помощь?</h2>
+                        <div class="w-20 h-1 bg-blue-600 mb-6"></div>
+                        <p class="text-gray-700 mb-8">
+                            Не стесняйтесь обращаться к нам. Мы поможем вам на каждом этапе вашего юридического пути. 
+                            Свяжитесь с нами сегодня, и мы поможем вам найти решение.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-phone-alt text-blue-600 mr-4"></i>
+                                <span class="text-gray-800">+386 40 854 321</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope text-blue-600 mr-4"></i>
+                                <span class="text-gray-800">team@helph.si</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-blue-600 mr-4"></i>
+                                <span class="text-gray-800">Vodovodna cesta 100, 1000 Ljubljana</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 bg-white p-8">
+                        <form class="space-y-6" action="https://formspree.io/f/mdkdgyeo" method="POST" id="contact-form">
+                            <div>
+                                <label for="name" class="block text-gray-700 font-medium mb-2">Имя</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" style="min-height: 48px;">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Электронная почта</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-gray-700 font-medium mb-2">Комментарий</label>
+                                <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300" id="submit-btn">
+                                <span id="submit-text">Получить поддержку</span>
+                                <span id="submit-loading" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-2"></i>Отправка...
+                                </span>
+                            </button>
+                            <div id="form-message" class="hidden mt-4 p-4 rounded-lg"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="py-20 bg-blue-50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 mb-8 md:mb-0 md:pr-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Контакты</h2>
+                    <div class="w-20 h-1 bg-blue-600 mb-6"></div>
+                    <p class="text-gray-700 mb-6">
+                        Мы всегда рады помочь вам с любыми юридическими вопросами. Свяжитесь с нами удобным для вас способом.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-phone-alt text-blue-600 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Телефон</h4>
+                                <p class="text-gray-700">+386 40 854 321</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-blue-600 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Электронная почта</h4>
+                                <p class="text-gray-700">team@helph.si</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-600 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Адрес</h4>
+                                <p class="text-gray-700">Vodovodna cesta 100, 1000 Ljubljana</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://calendly.com/helph/new-meeting" target="_blank" class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 mt-6 mb-2">
+                        <i class="fas fa-calendar-alt mr-2"></i> Записаться на онлайн-консультацию
+                    </a>
+                </div>
+                <div class="md:w-2/3">
+                    <div class="map-container rounded-xl shadow-lg overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2768.063581642492!2d14.5053083155934!3d46.05677007911198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476532f6d3b9e6c5%3A0xa8d4f6c6a6e7a9e1!2sVodovodna%20cesta%20100%2C%201000%20Ljubljana%2C%20Slovenia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12 border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">Фонд помощи</div>
+                    <p class="text-gray-600">© 2024 Фонд помощи соотечественникам в Словении. Все права защищены.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Политика конфиденциальности</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Условия использования</a>
+                    <a href="contacts.html" class="text-gray-600 hover:text-blue-600">Контакты</a>
+                </div>
+                <button id="back-to-top" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Prevent touch delay
+        document.addEventListener('touchstart', function() {}, true);
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Accordion functionality
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionItem = header.parentElement;
+                const accordionContent = header.nextElementSibling;
+                const icon = header.querySelector('i');
+                
+                // Toggle the active class on the accordion item
+                accordionItem.classList.toggle('active');
+                
+                // Rotate the icon
+                if (accordionItem.classList.contains('active')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Contact form handling
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const submitText = document.getElementById('submit-text');
+        const submitLoading = document.getElementById('submit-loading');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            submitText.classList.add('hidden');
+            submitLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+            formMessage.classList.add('hidden');
+
+            // Get form data
+            const formData = new FormData(contactForm);
+            
+            // Submit form using fetch
+            fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success
+                    formMessage.className = 'mt-4 p-4 rounded-lg bg-green-100 text-green-800 border border-green-200';
+                    formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.';
+                    contactForm.reset();
+                } else {
+                    // Error
+                    formMessage.className = 'mt-4 p-4 rounded-lg bg-red-100 text-red-800 border border-red-200';
+                    formMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>Произошла ошибка при отправке. Попробуйте еще раз или свяжитесь с нами по телефону.';
+                }
+            })
+            .catch(error => {
+                // Network error
+                formMessage.className = 'mt-4 p-4 rounded-lg bg-red-100 text-red-800 border border-red-200';
+                formMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>Ошибка сети. Попробуйте еще раз или свяжитесь с нами по телефону.';
+            })
+            .finally(() => {
+                // Reset button state
+                submitText.classList.remove('hidden');
+                submitLoading.classList.add('hidden');
+                submitBtn.disabled = false;
+                formMessage.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
