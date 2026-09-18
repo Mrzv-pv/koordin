@@ -68,7 +68,7 @@ const icon = (name, size = 20) =>
 const FAVICON =
   'data:image/svg+xml,' +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#8c2f39"/><path d="M8 8h16M8 8v16M8 24h16" stroke="#f5f4f0" stroke-width="2.2" fill="none" stroke-linecap="square"/><path d="M13 16h8" stroke="#f5f4f0" stroke-width="2.2" stroke-linecap="square"/></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#17406f"/><stop offset="1" stop-color="#3ba5c4"/></linearGradient></defs><rect width="32" height="32" fill="url(#g)"/><path d="M8 8h16M8 8v16M8 24h16" stroke="#eef2f8" stroke-width="2.2" fill="none" stroke-linecap="square"/><path d="M13 16h8" stroke="#eef2f8" stroke-width="2.2" stroke-linecap="square"/></svg>`
   );
 
 const NAV_LINKS = [
