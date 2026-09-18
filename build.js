@@ -13,6 +13,7 @@
 import { mkdir, writeFile, cp, rm, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createServer } from 'node:http';
+import { createHash } from 'node:crypto';
 import { extname, join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -45,6 +46,17 @@ const ruDate = (iso) => {
 };
 
 const pad2 = (n) => String(n).padStart(2, '0');
+
+/**
+ * Имена таблицы стилей и скрипта содержат хеш их содержимого.
+ *
+ * Зачем: ассеты отдаются с длинным сроком кеша, и при неизменном имени
+ * посетитель после выкатки получал новый HTML со старым CSS — вёрстка
+ * разъезжалась до истечения кеша. Хеш в имени делает это невозможным:
+ * новый HTML ссылается на новый файл, старый остаётся лежать в кеше.
+ */
+const ASSET = { css: 'assets/styles.css', js: 'assets/site.js' };
+const hash8 = (buf) => createHash('sha256').update(buf).digest('hex').slice(0, 8);
 
 /* ────────────────────────────── иконки ──────────────────────────────
    Набор намеренно минимальный: иконки нужны только там, где они несут
@@ -96,7 +108,7 @@ const layout = ({ title, description, current, canonical, body, head = '' }) => 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="${ASSET.css}">
 ${head}</head>
 <body>
 <a class="skip" href="#main">Перейти к содержимому</a>
@@ -154,7 +166,7 @@ ${body}
   </div>
 </footer>
 
-<script src="assets/site.js" defer></script>
+<script src="${ASSET.js}" defer></script>
 </body>
 </html>
 `;
@@ -642,6 +654,14 @@ async function build() {
   if (existsSync(OUT)) await rm(OUT, { recursive: true });
   await mkdir(join(OUT, 'assets'), { recursive: true });
 
+  // хеши считаем до генерации страниц: имена попадают в разметку
+  const cssRaw = await readFile(join(__dirname, 'src', 'assets', 'styles.css'));
+  const jsRaw = await readFile(join(__dirname, 'src', 'assets', 'site.js'));
+  ASSET.css = `assets/styles.${hash8(cssRaw)}.css`;
+  ASSET.js = `assets/site.${hash8(jsRaw)}.js`;
+  await writeFile(join(OUT, ASSET.css), cssRaw);
+  await writeFile(join(OUT, ASSET.js), jsRaw);
+
   const files = [
     ['index.html', pageIndex()],
     ['wiki.html', pageWiki()],
@@ -654,12 +674,12 @@ async function build() {
 
   for (const [name, content] of files) await writeFile(join(OUT, name), content, 'utf8');
 
-  // рекурсивно — в assets есть подпапка img
-  await cp(join(__dirname, 'src', 'assets'), join(OUT, 'assets'), { recursive: true });
+  await cp(join(__dirname, 'src', 'assets', 'img'), join(OUT, 'assets', 'img'), { recursive: true });
 
   console.log('✓ Собрано в dist/');
   console.log(`  страниц: ${files.filter(([n]) => n.endsWith('.html')).length}, вопросов: ${entries.length}`);
   console.log(`  ${categories.map((c) => `${c.short}: ${byCategory(c.id).length}`).join(', ')}`);
+  console.log(`  ассеты: ${ASSET.css}, ${ASSET.js}`);
 
   // проверки целостности
   const ids = entries.map((e) => e.id);
