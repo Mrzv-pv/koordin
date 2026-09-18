@@ -500,6 +500,13 @@ a:hover { color: var(--accent-2); }
 .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
 @media (max-width: 800px) { .cols { grid-template-columns: 1fr; gap: 34px; } }
 
+/* Абзац внутри колонки. Раньше эти свойства стояли атрибутом style прямо
+   в разметке — и строгая политика CSP (style-src 'self', без unsafe-inline)
+   вырезала их на продакшене целиком. Инлайновых стилей в выводе больше нет,
+   сборка падает, если они появятся. */
+.col-text { margin: 0 0 18px; color: var(--ink-2); font-size: 16.5px; line-height: 1.55; }
+.muted { color: var(--ink-3); font-size: 15px; }
+
 .checklist { margin: 0; padding: 0; list-style: none; }
 .checklist li { position: relative; padding: 11px 0 11px 26px; border-bottom: 1px solid var(--rule-2); font-size: 16.5px; line-height: 1.5; color: var(--ink-2); }
 .checklist li:last-child { border-bottom: 0; }
@@ -507,6 +514,7 @@ a:hover { color: var(--accent-2); }
 .checklist b { color: var(--ink); font-weight: 600; }
 
 .contact-lines { margin: 0; }
+.contact-lines--spaced { margin-top: 32px; }
 .contact-lines > div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--rule-2); }
 .contact-lines dt { font-size: 14.5px; color: var(--ink-3); }
 .contact-lines dd { margin: 0; font-size: 16.5px; }
@@ -592,6 +600,7 @@ a:hover { color: var(--accent-2); }
   font-size: 15.5px; line-height: 1.5; color: var(--ink-2);
 }
 .caveat svg { flex: 0 0 auto; margin-top: 3px; color: var(--ochre); }
+.caveat p { margin: 0; }
 
 .entry__foot {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
@@ -618,6 +627,7 @@ a:hover { color: var(--accent-2); }
 .no-results { padding: 44px 0; color: var(--ink-3); }
 .no-results[hidden] { display: none; }
 .no-results strong { display: block; font-family: var(--font-display); color: var(--ink); font-size: 21px; margin-bottom: 7px; }
+.no-results p { margin: 0; }
 
 .wiki-cta {
   margin-top: 40px; padding: 26px;
@@ -635,6 +645,7 @@ a:hover { color: var(--accent-2); }
 /* ---------------------------------------------------------- prose */
 
 .prose { max-width: 38rem; padding-block: 48px 76px; }
+.prose--after-figure { padding-top: 36px; }
 .prose h1 { font-family: var(--font-display); font-size: clamp(31px, 4.6vw, 42px); line-height: 1.1; letter-spacing: -.02em; font-weight: 700; margin: 0 0 20px; text-wrap: balance; }
 .prose h2 { font-family: var(--font-display); font-size: 23px; font-weight: 700; margin: 36px 0 10px; }
 .prose p, .prose li { font-family: var(--font-display); font-size: 18px; line-height: 1.62; color: var(--ink-2); }
@@ -653,6 +664,7 @@ a:hover { color: var(--accent-2); }
 }
 .disclaimer svg { flex: 0 0 auto; margin-top: 3px; }
 .disclaimer b { color: var(--ink-2); }
+.disclaimer p { margin: 0; }
 
 .site-footer {
   background: var(--paper); padding-block: 40px 30px;

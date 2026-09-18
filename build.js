@@ -164,7 +164,7 @@ ${body}
 const disclaimerBlock = () => `
       <div class="disclaimer">
         ${icon('info', 17)}
-        <p style="margin:0"><b>Справочная информация, а не индивидуальная консультация.</b> ${esc(
+        <p><b>Справочная информация, а не индивидуальная консультация.</b> ${esc(
           site.disclaimer.split('. ').slice(1).join('. ')
         )}</p>
       </div>`;
@@ -187,7 +187,7 @@ const entryHtml = (e) => {
     : '';
 
   const caveat = e.caveat
-    ? `\n            <div class="caveat">${icon('info', 16)}<p style="margin:0">${esc(e.caveat)}</p></div>`
+    ? `\n            <div class="caveat">${icon('info', 16)}<p>${esc(e.caveat)}</p></div>`
     : '';
 
   const related = (e.related || []).length
@@ -333,8 +333,8 @@ const pageIndex = () => {
         </div>
         <div>
           <div class="section__head"><h2>Если на юриста нет денег</h2></div>
-          <p style="margin:0 0 16px;color:var(--ink-2);font-size:16.5px;line-height:1.55">В Словении работает государственная программа бесплатной правовой помощи. Иностранцы с видом на жительство — временным или постоянным — имеют на неё право <b>наравне с гражданами</b>: она оплачивает адвоката, судебные расходы и работу переводчика.</p>
-          <p style="margin:0 0 20px;color:var(--ink-2);font-size:16.5px;line-height:1.55">Условие — имущественный тест. Об этом стоит знать до того, как отказаться от защиты своих прав из-за денег.</p>
+          <p class="col-text">В Словении работает государственная программа бесплатной правовой помощи. Иностранцы с видом на жительство — временным или постоянным — имеют на неё право <b>наравне с гражданами</b>: она оплачивает адвоката, судебные расходы и работу переводчика.</p>
+          <p class="col-text">Условие — имущественный тест. Об этом стоит знать до того, как отказаться от защиты своих прав из-за денег.</p>
           <a class="btn btn--outline" href="wiki.html#bpp-kto-imeet-pravo">Условия и куда подавать ${icon('arrow', 17)}</a>
         </div>
       </div>
@@ -352,7 +352,7 @@ const pageIndex = () => {
       <div class="cols">
         <div>
           <div class="section__head"><h2>Написать до записи</h2></div>
-          <p style="margin:0 0 20px;color:var(--ink-2);font-size:16.5px;line-height:1.55">Если у вас на руках решение государственного органа, напишите сразу и укажите дату вручения: сроки обжалования в Словении считаются днями, а не месяцами.</p>
+          <p class="col-text">Если у вас на руках решение государственного органа, напишите сразу и укажите дату вручения: сроки обжалования в Словении считаются днями, а не месяцами.</p>
           <dl class="contact-lines">
             <div><dt>Почта</dt><dd><a href="mailto:${site.email}">${esc(site.email)}</a></dd></div>
             <div><dt>Telegram</dt><dd><a href="${site.telegram}" rel="noopener noreferrer" target="_blank">@SloveniaLegal_bot</a></dd></div>
@@ -427,7 +427,7 @@ const pageWiki = () => {
 
       <div class="no-results" id="wiki-empty" hidden>
         <strong>Ничего не нашлось</strong>
-        <p style="margin:0">Попробуйте другое слово или напишите нам — <a href="mailto:${site.email}">${esc(site.email)}</a>. Вопросы читателей пополняют библиотеку.</p>
+        <p>Попробуйте другое слово или напишите нам — <a href="mailto:${site.email}">${esc(site.email)}</a>. Вопросы читателей пополняют библиотеку.</p>
       </div>
 
       <div class="wiki-cta">
@@ -461,7 +461,7 @@ const pageAbout = () => {
       <img src="assets/img/justice-800.jpg" width="800" height="533" alt="Бронзовая статуя Фемиды с весами" loading="lazy" decoding="async">
     </figure>
   </div>
-  <div class="shell prose" style="padding-top:36px">
+  <div class="shell prose prose--after-figure">
     <h1>О проекте</h1>
     <p>Это практика юридической помощи для граждан России, живущих в Словении, и открытый справочник при ней. Консультации ведутся на русском языке онлайн; справочник доступен всем и бесплатно.</p>
 
@@ -506,10 +506,10 @@ const pageContacts = () => {
           <a class="btn btn--primary" href="${site.calendly}" rel="noopener noreferrer" target="_blank">Выбрать время</a>
           <a class="btn btn--outline" href="mailto:${site.email}">Написать письмо</a>
         </div>
-        <dl class="contact-lines" style="margin-top:32px">
+        <dl class="contact-lines contact-lines--spaced">
           <div><dt>Почта</dt><dd><a href="mailto:${site.email}">${esc(site.email)}</a></dd></div>
           <div><dt>Telegram</dt><dd><a href="${site.telegram}" rel="noopener noreferrer" target="_blank">@SloveniaLegal_bot</a></dd></div>
-          <div><dt>Адрес</dt><dd><a href="https://www.openstreetmap.org/search?query=${mapQ}" rel="noopener noreferrer" target="_blank">${esc(site.address)}</a><br><span style="color:var(--ink-3);font-size:15px">Приём по предварительной договорённости</span></dd></div>
+          <div><dt>Адрес</dt><dd><a href="https://www.openstreetmap.org/search?query=${mapQ}" rel="noopener noreferrer" target="_blank">${esc(site.address)}</a><br><span class="muted">Приём по предварительной договорённости</span></dd></div>
         </dl>
       </div>
 
@@ -539,7 +539,7 @@ const pageContacts = () => {
         </div>
         <div>
           <div class="section__head"><h2>Про сроки</h2></div>
-          <p style="margin:0 0 16px;color:var(--ink-2);font-size:16.5px;line-height:1.55">Если у вас на руках решение государственного органа, которое вы хотите оспорить, напишите <b>сразу</b> и укажите дату его вручения. Сроки обжалования в Словении короткие и считаются днями: по административным решениям это обычно 15 дней, а по некоторым видам разрешений жалоба не подаётся вовсе — остаётся только иск в суд.</p>
+          <p class="col-text">Если у вас на руках решение государственного органа, которое вы хотите оспорить, напишите <b>сразу</b> и укажите дату его вручения. Сроки обжалования в Словении короткие и считаются днями: по административным решениям это обычно 15 дней, а по некоторым видам разрешений жалоба не подаётся вовсе — остаётся только иск в суд.</p>
           <a class="btn btn--outline" href="wiki.html#sroki-obzhalovaniya">Сроки обжалования ${icon('arrow', 17)}</a>
         </div>
       </div>
@@ -682,8 +682,20 @@ async function build() {
   const badAnchors = [...new Set(anchors.filter((a) => !known.has(a)))];
   if (badAnchors.length) console.warn(`  ⚠ ссылки на несуществующие якоря: ${badAnchors.join(', ')}`);
 
-  if (!dupes.length && !badRelated.length && !badCats.length && !badAnchors.length) {
-    console.log('  ✓ проверка ссылок, якорей и категорий пройдена');
+  // Инлайновые атрибуты style запрещены: политика CSP на продакшене
+  // (style-src 'self', без unsafe-inline) вырезает их молча, и вёрстка
+  // разъезжается только на живом сайте, а локально выглядит правильно.
+  const inlineStyles = files
+    .filter(([n]) => n.endsWith('.html'))
+    .map(([n, c]) => [n, (c.match(/ style="/g) || []).length])
+    .filter(([, n]) => n > 0);
+  if (inlineStyles.length) {
+    console.error(`  ✗ инлайновые style запрещены (их удалит CSP): ${inlineStyles.map(([n, c]) => `${n}: ${c}`).join(', ')}`);
+    process.exitCode = 1;
+  }
+
+  if (!dupes.length && !badRelated.length && !badCats.length && !badAnchors.length && !inlineStyles.length) {
+    console.log('  ✓ проверки пройдены: ссылки, якоря, категории, отсутствие инлайновых стилей');
   }
 }
 
