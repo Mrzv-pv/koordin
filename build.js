@@ -10,7 +10,7 @@
  *   node build.js --serve    — собрать и поднять локальный сервер
  */
 
-import { mkdir, writeFile, copyFile, rm, readdir, readFile } from 'node:fs/promises';
+import { mkdir, writeFile, cp, rm, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, dirname } from 'node:path';
@@ -235,7 +235,10 @@ const pageIndex = () => {
   const c = site.consultation;
 
   const body = `
-  <section class="hero">
+  <section class="hero hero--photo">
+    <div class="hero__bg" aria-hidden="true">
+      <img src="assets/img/justice-1400.jpg" width="1400" height="933" alt="" fetchpriority="high" decoding="async">
+    </div>
     <div class="shell hero__grid">
       <div>
         <p class="label">Словения · консультация на русском языке</p>
@@ -310,6 +313,15 @@ const pageIndex = () => {
     </div>
   </section>
 
+  <section class="figure-band">
+    <img src="assets/img/consult-1400.jpg" width="1400" height="884" alt="" loading="lazy" decoding="async">
+    <div class="figure-band__overlay">
+      <div class="shell">
+        <p>Справочник открыт и бесплатен. Консультация нужна там, где важны <em>ваши</em> документы и сроки.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="band">
     <div class="shell section">
       <div class="cols">
@@ -364,6 +376,8 @@ const pageIndex = () => {
     current: 'index.html',
     canonical: '',
     body,
+    // герой — LCP-элемент, поэтому браузер узнаёт о картинке до разбора разметки
+    head: '<link rel="preload" as="image" href="assets/img/justice-1400.jpg" fetchpriority="high">\n',
   });
 };
 
@@ -442,7 +456,12 @@ const pageWiki = () => {
 
 const pageAbout = () => {
   const body = `
-  <div class="shell prose">
+  <div class="shell">
+    <figure class="page-figure">
+      <img src="assets/img/justice-800.jpg" width="800" height="533" alt="Бронзовая статуя Фемиды с весами" loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <div class="shell prose" style="padding-top:36px">
     <h1>О проекте</h1>
     <p>Это практика юридической помощи для граждан России, живущих в Словении, и открытый справочник при ней. Консультации ведутся на русском языке онлайн; справочник доступен всем и бесплатно.</p>
 
@@ -667,9 +686,8 @@ async function build() {
 
   for (const [name, content] of files) await writeFile(join(OUT, name), content, 'utf8');
 
-  for (const asset of await readdir(join(__dirname, 'src', 'assets'))) {
-    await copyFile(join(__dirname, 'src', 'assets', asset), join(OUT, 'assets', asset));
-  }
+  // рекурсивно — в assets есть подпапка img
+  await cp(join(__dirname, 'src', 'assets'), join(OUT, 'assets'), { recursive: true });
 
   console.log('✓ Собрано в dist/');
   console.log(`  страниц: ${files.filter(([n]) => n.endsWith('.html')).length}, вопросов: ${entries.length}`);

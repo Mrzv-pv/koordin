@@ -20,7 +20,7 @@ export const site = {
   description:
     'Онлайн-консультации юриста на русском языке для граждан России, живущих в Словении, и открытая библиотека из 59 ответов: ВНЖ и ПМЖ, здравоохранение, образование, гражданские споры, налоги и документы.',
   url: 'https://www.koordin.eu',
-  email: 'team@helph.si',
+  email: 'mo9box@gmail.com',
   calendly: 'https://calendly.com/helph/new-meeting',
   telegram: 'https://t.me/SloveniaLegal_bot',
   address: 'C. na Brdo 85, 1000 Ljubljana',
