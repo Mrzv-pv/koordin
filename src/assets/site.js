@@ -100,10 +100,14 @@
   var index = entries.map(function (el) {
     var parts = [];
     var summary = el.querySelector('summary');
-    var answer = el.querySelector('.entry__answer');
+    var lead = el.querySelector('.entry__lead');
     var caveat = el.querySelector('.caveat');
     if (summary) parts.push(summary.textContent);
-    if (answer) parts.push(answer.textContent);
+    if (lead) parts.push(lead.textContent);
+    var pts = el.querySelector('.entry__points');
+    if (pts) parts.push(pts.textContent);
+    var nxt = el.querySelector('.entry__next');
+    if (nxt) parts.push(nxt.textContent);
     if (caveat) parts.push(caveat.textContent);
     Array.prototype.forEach.call(el.querySelectorAll('.term'), function (t) {
       parts.push(t.textContent);

@@ -16,8 +16,8 @@
 
   --ink:        #0d1b2e;
   --ink-2:      #3b4f6b;
-  --ink-3:      #64799a;
-  --ink-4:      #93a5bd;
+  --ink-3:      #4b5f7d;
+  --ink-4:      #576c8e;
 
   --paper:      #eef2f8;
   --paper-2:    #e4eaf4;
@@ -243,7 +243,7 @@ a:hover { color: var(--accent-2); }
   .header-cta { padding: 9px 14px; font-size: 15px; margin-left: auto; order: 2; }
   .theme-toggle { order: 3; }
   .nav-toggle { order: 4; margin-left: 0; }
-  .icon-btn { width: 40px; height: 40px; }
+  .icon-btn { width: 44px; height: 44px; }
   .site-header__row { gap: 10px; }
 }
 
@@ -329,6 +329,13 @@ a:hover { color: var(--accent-2); }
   margin: 20px 0 0; max-width: 34rem;
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hero__who {
+  margin: 28px 0 0; padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.22);
+  font-size: 16px; line-height: 1.5; color: var(--hero-dim); max-width: 34rem;
+}
+.hero__who b { color: var(--hero-ink); font-weight: 600; }
+.hero__who a { color: #a8e0f0; }
 
 .hero__facts { display: flex; flex-wrap: wrap; gap: 0 32px; margin: 32px 0 0; padding-top: 20px; border-top: 1px solid var(--rule); }
 .hero__facts div { padding-block: 6px; }
@@ -426,13 +433,6 @@ a:hover { color: var(--accent-2); }
 }
 .figure-band__overlay em { font-style: italic; color: #a8e0f0; }
 
-/* иллюстрация в шапке текстовой страницы */
-.page-figure { margin: 0; padding-top: 30px; }
-.page-figure img {
-  display: block; width: 100%;
-  height: clamp(170px, 24vw, 280px);
-  object-fit: cover; object-position: center 30%;
-}
 
 /* ---------------------------------------------------------- шаги */
 
@@ -553,6 +553,13 @@ a:hover { color: var(--accent-2); }
 .sidebar .n { font-size: 14px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
 
 .wiki__main { min-width: 0; }
+.wiki__intro { padding-block: 10px 4px; }
+.wiki__intro h1 {
+  font-family: var(--font-display);
+  font-size: clamp(27px, 4.2vw, 36px); line-height: 1.12;
+  letter-spacing: -.02em; font-weight: 700; margin: 0 0 10px; text-wrap: balance;
+}
+.wiki__intro p { margin: 0; color: var(--ink-3); font-size: 16.5px; max-width: 42rem; }
 .wiki__searchbar { position: sticky; top: 67px; z-index: 40; background: var(--paper); padding-block: 14px 12px; border-bottom: 1px solid var(--rule); margin-bottom: 26px; }
 
 .search { position: relative; }
@@ -604,7 +611,34 @@ a:hover { color: var(--accent-2); }
 .entry.is-urgent > summary::before { color: var(--urgent); }
 
 .entry__body { padding: 0 0 26px 27px; max-width: 43rem; }
-.entry__answer { font-family: var(--font-display); font-size: 18px; line-height: 1.6; color: var(--ink-2); margin: 0; white-space: pre-line; }
+.entry__lead {
+  font-family: var(--font-display);
+  font-size: 18.5px; line-height: 1.55; color: var(--ink); margin: 0;
+}
+.entry__points { margin: 14px 0 0; padding: 0; list-style: none; }
+.entry__points li {
+  position: relative; padding: 7px 0 7px 18px;
+  font-family: var(--font-display); font-size: 17.5px; line-height: 1.5; color: var(--ink-2);
+}
+.entry__points li::before {
+  content: ""; position: absolute; left: 0; top: 16px;
+  width: 6px; height: 2px; background: var(--accent);
+}
+.entry__next {
+  margin-top: 16px; padding: 14px 16px;
+  background: var(--surface-2); border-left: 2px solid var(--accent);
+}
+.entry__next h4 {
+  margin: 0 0 8px; font-family: var(--font-ui);
+  font-size: 12px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent);
+}
+.entry__next ol { margin: 0; padding-left: 20px; }
+.entry__next li {
+  font-family: var(--font-display); font-size: 17px; line-height: 1.5;
+  color: var(--ink-2); margin-bottom: 6px;
+}
+.entry__next li:last-child { margin-bottom: 0; }
 
 .entry__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
 .term { font-size: 13.5px; padding: 2px 9px; background: var(--slate-wash); color: var(--slate); white-space: nowrap; }
@@ -661,7 +695,6 @@ a:hover { color: var(--accent-2); }
 /* ---------------------------------------------------------- prose */
 
 .prose { max-width: 38rem; padding-block: 48px 76px; }
-.prose--after-figure { padding-top: 36px; }
 .prose h1 { font-family: var(--font-display); font-size: clamp(31px, 4.6vw, 42px); line-height: 1.1; letter-spacing: -.02em; font-weight: 700; margin: 0 0 20px; text-wrap: balance; }
 .prose h2 { font-family: var(--font-display); font-size: 23px; font-weight: 700; margin: 36px 0 10px; }
 .prose p, .prose li { font-family: var(--font-display); font-size: 18px; line-height: 1.62; color: var(--ink-2); }
@@ -669,6 +702,20 @@ a:hover { color: var(--accent-2); }
 .prose ul { margin: 0 0 16px; padding-left: 20px; }
 .prose li { margin-bottom: 8px; }
 .prose strong { color: var(--ink); font-weight: 700; }
+
+.people { list-style: none; margin: 0 0 18px; padding: 0; }
+.people li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
+  padding: 13px 0; border-bottom: 1px solid var(--rule-2);
+}
+.people li:last-child { border-bottom: 0; }
+.people b { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--ink); }
+.people__role {
+  font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-wash); padding: 2px 8px;
+}
+.people__focus { flex: 1 1 100%; font-family: var(--font-display); font-size: 17px; color: var(--ink-2); }
+.people__cred { flex: 1 1 100%; font-size: 15px; color: var(--ink-3); }
 
 /* ---------------------------------------------------------- disclaimer + footer */
 
@@ -702,11 +749,23 @@ a:hover { color: var(--accent-2); }
 @media (max-width: 940px) {
   .hero__grid { grid-template-columns: 1fr; gap: 38px; }
   .slip { max-width: 30rem; }
-  .hero__bg img { object-position: 68% 34%; }
+
+  /* На телефоне фотография оказывается прямо под вводным текстом и мешает
+     читать: статуя уходит вбок и глубже в фон, затемнение усиливается.
+     Снимок остаётся как фактура, а не как картинка с сюжетом. */
+  .hero__bg img { object-position: 84% 22%; opacity: .55; }
+  .hero--photo::after {
+    background: linear-gradient(180deg, rgba(6,17,33,.92) 0%, rgba(6,17,33,.80) 55%, rgba(6,17,33,.88) 100%);
+  }
 }
 
 @media (max-width: 960px) {
-  .wiki { grid-template-columns: 1fr; gap: 0; }
+  /* minmax(0,1fr), а не 1fr: иначе минимум колонки считается по min-content
+     полосы категорий, и она растягивает макетный вьюпорт (390 -> 455 px).
+     min-width:0 нужен по той же причине — грид-элементы по умолчанию auto. */
+  .wiki { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .wiki > * { min-width: 0; }
+  .sidebar, .sidebar nav { min-width: 0; max-width: 100%; }
   .sidebar {
     position: sticky; top: 66px; z-index: 45;
     margin-inline: calc(var(--gutter) * -1);

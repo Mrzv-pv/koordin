@@ -17,7 +17,7 @@ import { createHash } from 'node:crypto';
 import { extname, join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { site, categories, entries, byCategory } from './src/content.js';
+import { site, categories, entries, byCategory, consultants } from './src/content.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, 'dist');
@@ -80,7 +80,7 @@ const icon = (name, size = 20) =>
 const FAVICON =
   'data:image/svg+xml,' +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#17406f"/><stop offset="1" stop-color="#3ba5c4"/></linearGradient></defs><rect width="32" height="32" fill="url(#g)"/><path d="M8 8h16M8 8v16M8 24h16" stroke="#eef2f8" stroke-width="2.2" fill="none" stroke-linecap="square"/><path d="M13 16h8" stroke="#eef2f8" stroke-width="2.2" stroke-linecap="square"/></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="g" x1="0" y1="32" x2="32" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#12345c"/><stop offset=".55" stop-color="#2079b0"/><stop offset="1" stop-color="#57c8dc"/></linearGradient></defs><rect width="32" height="32" fill="url(#g)"/><path d="M10 6.5v19" stroke="#fff" stroke-width="3.4" stroke-linecap="square"/><path d="M22.5 6.5 12.6 16l9.9 9.5" stroke="#fff" stroke-width="3.4" stroke-linejoin="miter" stroke-linecap="square" fill="none"/></svg>`
   );
 
 const NAV_LINKS = [
@@ -191,7 +191,18 @@ const urgentBand = () => `
         <a href="wiki.html#emergency">Что делать в кризисной ситуации ${icon('arrow', 15)}</a>
       </div>`;
 
+const answerText = (e) =>
+  [e.lead, ...(e.points || []), ...(e.next || [])].filter(Boolean).join(' ');
+
 const entryHtml = (e) => {
+  const points = (e.points || []).length
+    ? `\n            <ul class="entry__points">${e.points.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`
+    : '';
+  const next = (e.next || []).length
+    ? `\n            <div class="entry__next"><h4>Что делать</h4><ol>${e.next
+        .map((x) => `<li>${esc(x)}</li>`)
+        .join('')}</ol></div>`
+    : '';
   // Поисковый индекс намеренно не дублируется в data-атрибут: это удваивало вес
   // страницы. site.js собирает строку для поиска из отрисованного текста.
   const terms = (e.terms || []).length
@@ -226,7 +237,7 @@ const entryHtml = (e) => {
           <details class="entry${e.urgent ? ' is-urgent' : ''}" id="${e.id}">
             <summary><span class="q">${esc(e.q)}</span></summary>
             <div class="entry__body">
-              <p class="entry__answer">${esc(e.a)}</p>${terms}${caveat}${related}
+              <p class="entry__lead">${esc(e.lead)}</p>${points}${next}${terms}${caveat}${related}
               <div class="entry__foot">
                 <span class="checked${e.confidence === 'partly-verified' ? ' is-partial' : ''}">${
                   e.confidence === 'partly-verified'
@@ -260,11 +271,10 @@ const pageIndex = () => {
           <a class="btn btn--primary" href="${site.calendly}" rel="noopener noreferrer" target="_blank">Записаться на консультацию</a>
           <a class="btn btn--outline" href="wiki.html">Открыть библиотеку ${icon('arrow', 17)}</a>
         </div>
-        <dl class="hero__facts">
-          <div><dt>Формат</dt><dd>${esc(c.format)}</dd></div>
-          <div><dt>Язык</dt><dd>${esc(c.language)}</dd></div>
-          <div><dt>В библиотеке</dt><dd>${nQuestions(entries.length)}</dd></div>
-        </dl>
+        <p class="hero__who">Консультируют ${consultants
+          .slice(0, 3)
+          .map((p) => `<b>${esc(p.name)}</b> — ${esc(p.focus.toLowerCase())}`)
+          .join(', ')}. <a href="about.html#kto">Кто мы</a></p>
       </div>
 
       <div class="slip">
@@ -338,10 +348,11 @@ const pageIndex = () => {
     <div class="shell section">
       <div class="cols">
         <div>
-          <div class="section__head"><h2>Что вы получите</h2></div>
+          <div class="section__head"><h2>Что входит в консультацию</h2></div>
           <ul class="checklist">
-            ${c.outcomes.map((o) => `<li>${o}</li>`).join('\n            ')}
+            ${c.includes.map((o) => `<li>${esc(o)}</li>`).join('\n            ')}
           </ul>
+          <p class="col-text">${esc(c.outcome)}</p>
         </div>
         <div>
           <div class="section__head"><h2>Если на юриста нет денег</h2></div>
@@ -383,7 +394,7 @@ const pageIndex = () => {
   </section>
 `;
   return layout({
-    title: `${site.name} — ${site.tagline}`,
+    title: site.fullName,
     description: site.description,
     current: 'index.html',
     canonical: '',
@@ -425,6 +436,10 @@ const pageWiki = () => {
     </aside>
 
     <div class="wiki__main">
+      <div class="wiki__intro">
+        <h1>Библиотека вопросов о жизни в Словении</h1>
+        <p>${entries.length} ответов со ссылками на первоисточники и датой проверки. Если вашего случая здесь нет — <a href="${site.calendly}" rel="noopener noreferrer" target="_blank">разберём на консультации</a>.</p>
+      </div>
       <div class="wiki__searchbar">
         <div class="search">
           <span class="search__icon">${icon('search', 18)}</span>
@@ -455,7 +470,7 @@ const pageWiki = () => {
   </div>
 `;
   return layout({
-    title: `Библиотека вопросов — ${site.name}`,
+    title: `Библиотека вопросов о жизни в Словении — ${site.name}`,
     description: `${entries.length} ответов на юридические и бытовые вопросы для россиян с ВНЖ в Словении: ${categories.map((c) => c.short.toLowerCase()).join(', ')}.`,
     current: 'wiki.html',
     canonical: 'wiki.html',
@@ -468,12 +483,7 @@ const pageWiki = () => {
 
 const pageAbout = () => {
   const body = `
-  <div class="shell">
-    <figure class="page-figure">
-      <img src="assets/img/justice-800.jpg" width="800" height="533" alt="Бронзовая статуя Фемиды с весами" loading="lazy" decoding="async">
-    </figure>
-  </div>
-  <div class="shell prose prose--after-figure">
+  <div class="shell prose">
     <h1>О проекте</h1>
     <p>Это практика юридической помощи для граждан России, живущих в Словении, и открытый справочник при ней. Консультации ведутся на русском языке онлайн; справочник доступен всем и бесплатно.</p>
 
@@ -484,6 +494,22 @@ const pageAbout = () => {
     <p>Каждый ответ называет учреждение, в которое нужно обратиться, и словенский термин, который вы увидите на бланке, — половина трудностей начинается там, где человек не знает, как называется то, что он ищет.</p>
     <p>У каждого ответа стоит <strong>дата проверки</strong>. Суммы и ставки, пересматриваемые ежегодно, помечены отдельно — им не стоит верить на слово через год после указанной даты. Где ответ зависит от вашего статуса, стоит пометка: обобщение в таких местах вредит больше, чем помогает.</p>
     <p>Факты сверены с первоисточниками — ZZZS, FURS, порталом eUprava, текстами законов и официальным вестником Uradni list. Ссылки стоят прямо под ответом. Там, где сверена основная норма, но детали зависят от практики учреждения, ответ помечен как «сверено частично»: умалчивать об этом в справочнике, по которому люди принимают решения, нельзя.</p>
+
+    <h2 id="kto">Кто консультирует</h2>
+    <p>Консультацию ведёт не «фонд» в общем смысле, а конкретные люди, и вы должны знать, к кому идёте:</p>
+    <ul class="people">
+      ${consultants
+        .map(
+          (p) => `<li>
+        <b>${esc(p.name)}</b><span class="people__role">${esc(p.role)}</span>
+        <span class="people__focus">${esc(p.focus)}</span>${
+            p.credentials ? `<span class="people__cred">${esc(p.credentials)}</span>` : ''
+          }
+      </li>`
+        )
+        .join('\n      ')}
+    </ul>
+    <p>Если вопрос выходит за рамки консультации и нужно представительство в словенских инстанциях, подключаются словенские юристы.</p>
 
     <h2>Чего здесь нет</h2>
     <p>Здесь нет советов, как обойти требование или ускорить процедуру в обход порядка. Для человека с видом на жительство цена такой ошибки несопоставима с выигрышем.</p>
@@ -637,7 +663,7 @@ const structuredData = () =>
         mainEntity: entries.map((e) => ({
           '@type': 'Question',
           name: e.q,
-          acceptedAnswer: { '@type': 'Answer', text: e.a },
+          acceptedAnswer: { '@type': 'Answer', text: answerText(e) },
         })),
       },
     ],
