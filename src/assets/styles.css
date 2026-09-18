@@ -730,7 +730,6 @@ a:hover { color: var(--accent-2); }
   color: var(--accent); background: var(--accent-wash); padding: 2px 8px;
 }
 .people__focus { flex: 1 1 100%; font-family: var(--font-display); font-size: 17px; color: var(--ink-2); }
-.people__cred { flex: 1 1 100%; font-size: 15px; color: var(--ink-3); }
 
 /* ---------------------------------------------------------- disclaimer + footer */
 
