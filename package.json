@@ -1,0 +1,15 @@
+{
+  "name": "koordin-wiki",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Правовая вики для россиян, постоянно проживающих в Словении",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --serve",
+    "start": "node build.js --serve"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
