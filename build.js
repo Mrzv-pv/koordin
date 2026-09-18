@@ -631,41 +631,10 @@ const structuredData = () =>
     ],
   });
 
-const vercelJson = () =>
-  JSON.stringify(
-    {
-      $schema: 'https://openapi.vercel.sh/vercel.json',
-      cleanUrls: true,
-      trailingSlash: false,
-      headers: [
-        {
-          source: '/(.*)',
-          headers: [
-            { key: 'X-Content-Type-Options', value: 'nosniff' },
-            { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-            { key: 'X-Frame-Options', value: 'DENY' },
-            { key: 'Permissions-Policy', value: 'geolocation=(), microphone=(), camera=(), interest-cohort=()' },
-            {
-              key: 'Content-Security-Policy',
-              value: [
-                "default-src 'self'",
-                "script-src 'self'",
-                "style-src 'self' https://fonts.googleapis.com",
-                'font-src https://fonts.gstatic.com',
-                "img-src 'self' data:",
-                "frame-ancestors 'none'",
-                "base-uri 'self'",
-                "form-action 'self'",
-              ].join('; '),
-            },
-          ],
-        },
-        { source: '/assets/(.*)', headers: [{ key: 'Cache-Control', value: 'public, max-age=3600' }] },
-      ],
-    },
-    null,
-    2
-  );
+/* Конфигурация Vercel (заголовки, редиректы, команда сборки) лежит в vercel.json
+   в КОРНЕ репозитория, а не генерируется в dist: при деплое из Git Vercel читает
+   её только из корня, а копия внутри dist просто отдавалась бы как статический
+   файл по адресу /vercel.json. */
 
 /* ────────────────────────────── запуск ────────────────────────────── */
 
@@ -681,7 +650,6 @@ async function build() {
     ['404.html', page404()],
     ['sitemap.xml', sitemap()],
     ['robots.txt', robots()],
-    ['vercel.json', vercelJson()],
   ];
 
   for (const [name, content] of files) await writeFile(join(OUT, name), content, 'utf8');
