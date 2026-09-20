@@ -731,6 +731,67 @@ a:hover { color: var(--accent-2); }
 }
 .people__focus { flex: 1 1 100%; font-family: var(--font-display); font-size: 17px; color: var(--ink-2); }
 
+
+/* ---------------------------------------------------------- согласие на аналитику */
+
+/* Полоса внизу, а не модальное окно поверх страницы: читать справочник
+   можно и не отвечая, решение не вымогается. Градиентная линейка сверху
+   связывает её с остальными блоками сайта. */
+.consent {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 150;
+  background: var(--surface);
+  border-top: 1px solid var(--rule);
+  box-shadow: 0 -10px 40px -24px rgba(6, 17, 33, .5);
+  padding: 18px var(--gutter) calc(18px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "title actions" "text actions" "more actions";
+  gap: 4px 28px;
+  align-items: start;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  background-image: var(--grad);
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  background-position: 0 0;
+}
+.consent__title {
+  grid-area: title;
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 700; margin: 0; color: var(--ink);
+}
+.consent__text {
+  grid-area: text;
+  margin: 2px 0 0; font-size: 15.5px; line-height: 1.5;
+  color: var(--ink-2); max-width: 46rem;
+}
+.consent__more { grid-area: more; justify-self: start; margin-top: 6px; font-size: 15px; }
+.consent__row {
+  grid-area: actions;
+  display: flex; gap: 10px; align-self: center;
+}
+/* Одинаковые по весу: ни один вариант не выделен. */
+.consent__btn {
+  min-height: 44px; min-width: 9.5rem;
+  padding: 11px 22px;
+  font-family: var(--font-ui); font-size: 16px; font-weight: 600;
+  color: var(--ink); background: transparent;
+  border: 1px solid var(--ink);
+  cursor: pointer; white-space: nowrap;
+}
+.consent__btn:hover { background: var(--ink); color: var(--paper); }
+
+@media (max-width: 760px) {
+  .consent {
+    grid-template-columns: 1fr;
+    grid-template-areas: "title" "text" "more" "actions";
+    gap: 6px;
+    padding-block: 16px;
+  }
+  .consent__row { margin-top: 12px; }
+  .consent__btn { flex: 1 1 0; padding-inline: 12px; }
+}
+
 /* ---------------------------------------------------------- disclaimer + footer */
 
 .disclaimer {
