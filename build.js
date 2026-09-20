@@ -55,7 +55,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
  * разъезжалась до истечения кеша. Хеш в имени делает это невозможным:
  * новый HTML ссылается на новый файл, старый остаётся лежать в кеше.
  */
-const ASSET = { css: 'assets/styles.css', js: 'assets/site.js' };
+const ASSET = { css: 'assets/styles.css', js: 'assets/site.js', analytics: 'assets/analytics.js' };
 const hash8 = (buf) => createHash('sha256').update(buf).digest('hex').slice(0, 8);
 
 /* ────────────────────────────── иконки ──────────────────────────────
@@ -109,6 +109,7 @@ const layout = ({ title, description, current, canonical, body, head = '' }) => 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="${ASSET.css}">
+<script src="${ASSET.analytics}" defer></script>
 ${head}</head>
 <body>
 <a class="skip" href="#main">Перейти к содержимому</a>
@@ -683,10 +684,13 @@ async function build() {
   // хеши считаем до генерации страниц: имена попадают в разметку
   const cssRaw = await readFile(join(__dirname, 'src', 'assets', 'styles.css'));
   const jsRaw = await readFile(join(__dirname, 'src', 'assets', 'site.js'));
+  const gaRaw = await readFile(join(__dirname, 'src', 'assets', 'analytics.js'));
   ASSET.css = `assets/styles.${hash8(cssRaw)}.css`;
   ASSET.js = `assets/site.${hash8(jsRaw)}.js`;
+  ASSET.analytics = `assets/analytics.${hash8(gaRaw)}.js`;
   await writeFile(join(OUT, ASSET.css), cssRaw);
   await writeFile(join(OUT, ASSET.js), jsRaw);
+  await writeFile(join(OUT, ASSET.analytics), gaRaw);
 
   const files = [
     ['index.html', pageIndex()],
@@ -705,7 +709,7 @@ async function build() {
   console.log('✓ Собрано в dist/');
   console.log(`  страниц: ${files.filter(([n]) => n.endsWith('.html')).length}, вопросов: ${entries.length}`);
   console.log(`  ${categories.map((c) => `${c.short}: ${byCategory(c.id).length}`).join(', ')}`);
-  console.log(`  ассеты: ${ASSET.css}, ${ASSET.js}`);
+  console.log(`  ассеты: ${ASSET.css}, ${ASSET.js}, ${ASSET.analytics}`);
 
   // проверки целостности
   const ids = entries.map((e) => e.id);
