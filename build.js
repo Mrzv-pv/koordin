@@ -369,20 +369,28 @@ const entryHtml = (e) => {
     seenUrl.add(u);
     return true;
   });
-  const labelCount = {};
+  /* Повторять имя ведомства у каждой ссылки — «Посольство России в Словении 1,
+     Посольство России в Словении 2» — нечитаемо. Собираем ссылки одного
+     источника рядом: первая несёт название, остальные — просто номера.
+     Рядом стоящие цифры однозначно относятся к предыдущему названию. */
+  const groups = [];
   srcList.forEach((u) => {
     const n = sourceName(u);
-    labelCount[n] = (labelCount[n] || 0) + 1;
+    const g = groups.find((x) => x.name === n);
+    if (g) g.urls.push(u);
+    else groups.push({ name: n, urls: [u] });
   });
-  const shown = {};
+  const link = (u, text) =>
+    `<a href="${attr(u)}" rel="noopener noreferrer" target="_blank">${esc(text)}</a>`;
   const sources = srcList.length
-    ? `\n            <p class="entry__sources"><span>Источники:</span> ${srcList
-        .map((u) => {
-          const n = sourceName(u);
-          shown[n] = (shown[n] || 0) + 1;
-          const label = labelCount[n] > 1 ? `${n} ${shown[n]}` : n;
-          return `<a href="${attr(u)}" rel="noopener noreferrer" target="_blank">${esc(label)}</a>`;
-        })
+    ? `\n            <p class="entry__sources"><span>Источники:</span> ${groups
+        .map((g) =>
+          g.urls.length === 1
+            ? link(g.urls[0], g.name)
+            : `<span class="src-group">${g.urls
+                .map((u, i) => link(u, i === 0 ? g.name : String(i + 1)))
+                .join('')}</span>`
+        )
         .join('')}</p>`
     : '';
 

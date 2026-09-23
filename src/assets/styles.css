@@ -673,6 +673,10 @@ a:hover { color: var(--accent-2); }
 .entry__sources a:hover { border-bottom-color: currentColor; }
 .entry__sources a + a { margin-left: 2px; }
 .entry__sources a:not(:last-child)::after { content: " ·"; color: var(--ink-4); }
+/* Ссылки одного ведомства идут группой: название, дальше номера. Внутри
+   группы разделяем запятой, между группами остаётся точка-разделитель. */
+.src-group { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; }
+.src-group a:not(:last-child)::after { content: ","; color: var(--ink-4); }
 /* «Смотрите также» — соседние ответы. Держим его визуально тише, чем
    источники: источник подтверждает ответ, а это просто дорожка дальше.
    Поэтому ссылки серо-синие, а не акцентные, и блок отделён чертой. */
