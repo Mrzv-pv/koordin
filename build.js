@@ -213,28 +213,32 @@ const SOURCE_NAMES = [
   [/^spot\.gov\.si$/, 'SPOT'],
   [/^podatki\.gov\.si$/, 'Открытые данные'],
   [/^esamonarocanje\.gov\.si$/, 'eNaročanje'],
+  [/(^|\.)ess\.gov\.si$/, 'ZRSZ'],
+  [/(^|\.)si-trust\.gov\.si$/, 'SI-TRUST'],
   [/(^|\.)gov\.si$/, 'gov.si'],
   [/(^|\.)uradni-list\.si$/, 'Uradni list'],
   [/(^|\.)sodisce\.si$|^nasodiscu\.si$|^iskalniksodneprakse\.si$|^sodnapraksa\.si$/, 'Суды Словении'],
   [/(^|\.)zpiz\.si$/, 'ZPIZ'],
   [/(^|\.)ajpes\.si$/, 'AJPES'],
-  [/(^|\.)ess\.gov\.si$/, 'ZRSZ'],
   [/(^|\.)policija\.si$/, 'Полиция Словении'],
   [/(^|\.)dars\.si$/, 'DARS'],
   [/(^|\.)ip-rs\.si$/, 'Информационный уполномоченный'],
   [/(^|\.)e-justice\.europa\.eu$/, 'e-Justice, ЕС'],
+  [/(^|\.)eur-lex\.europa\.eu$/, 'EUR-Lex'],
   [/(^|\.)europa\.eu$/, 'Евросоюз'],
   [/(^|\.)kdmid\.ru$/, 'МИД России'],
   [/(^|\.)nalog\.gov\.ru$/, 'ФНС России'],
   [/(^|\.)government\.ru$|(^|\.)pravo\.gov\.ru$|(^|\.)kremlin\.ru$/, 'Официальные акты РФ'],
   [/(^|\.)sfr\.gov\.ru$|(^|\.)pfr\.gov\.ru$/, 'СФР России'],
-  [/(^|\.)zakonodaja\.com$|(^|\.)racunovodstvo\.net$|(^|\.)pisrs\.si$/, 'Текст закона'],
+  [/(^|\.)pisrs\.si$/, 'PIS RS'],
+  /* Неофициальные сводки: текст там часто отстаёт от действующей редакции,
+     поэтому ярлык должен отличаться от официального PIS RS. */
+  [/(^|\.)zakonodaja\.com$|(^|\.)racunovodstvo\.net$/, 'Сводка закона'],
   [/(^|\.)ezdrav\.si$|^zvem\.ezdrav\.si$/, 'zVEM'],
   [/(^|\.)uni-lj\.si$|(^|\.)evs\.gov\.si$/, 'Вузы Словении'],
   [/(^|\.)zadusevnozdravje\.si$|(^|\.)nijz\.si$/, 'NIJZ'],
   [/(^|\.)epc\.si$/, 'Европейский потребительский центр'],
   [/^slovenia\.mid\.ru$/, 'Посольство России в Словении'],
-  [/(^|\.)eur-lex\.europa\.eu$/, 'EUR-Lex'],
   [/(^|\.)hcch\.net$/, 'Гаагская конференция'],
   [/(^|\.)stat\.si$/, 'SURS'],
   [/(^|\.)bsi\.si$/, 'Банк Словении'],
@@ -251,6 +255,9 @@ const SOURCE_NAMES = [
   [/(^|\.)zdaj\.net$/, 'NIJZ'],
   [/(^|\.)ssom\.si$|(^|\.)seps\.si$|(^|\.)studentska-prehrana\.si$/, 'Студенческие службы'],
   [/^xn--90aivcdt6dxbc\.xn--p1ai$/, 'объясняем.рф'],
+  [/(^|\.)akos-rs\.si$/, 'AKOS'],
+  [/(^|\.)notariat\.ru$/, 'Нотариальная палата России'],
+  [/(^|\.)mid\.ru$/, 'Посольство России в Словении'],
 ];
 
 const sourceName = (url) => {
@@ -859,17 +866,48 @@ async function build() {
   console.log(`  ассеты: ${ASSET.css}, ${ASSET.js}, ${ASSET.analytics}`);
 
   // проверки целостности
+  let warnings = 0;
   const ids = entries.map((e) => e.id);
   const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
-  if (dupes.length) console.warn(`  ⚠ повторяющиеся id: ${[...new Set(dupes)].join(', ')}`);
+  if (dupes.length) { warnings += 1; console.warn(`  ⚠ повторяющиеся id: ${[...new Set(dupes)].join(', ')}`); }
 
   const badRelated = entries.flatMap((e) =>
     (e.related || []).filter((r) => !ids.includes(r)).map((r) => `${e.id} → ${r}`)
   );
-  if (badRelated.length) console.warn(`  ⚠ ссылки related в никуда: ${badRelated.join(', ')}`);
+  if (badRelated.length) { warnings += 1; console.warn(`  ⚠ ссылки related в никуда: ${badRelated.join(', ')}`); }
+
+  /* Консульские сайты КД МИД сделаны по одному шаблону, и ссылка на чужой
+     город выглядит правдоподобно: текст похож, страница живая. Но порядок
+     записи и местные требования у каждой миссии свои, а читатель здесь —
+     в Любляне. Дважды такие ссылки заезжали незамеченными, поэтому проверяем
+     на сборке. Центральные сервисы КД МИД юрисдикции не имеют и разрешены. */
+  const KDMID_OK = new Set([
+    'kdmid.ru', 'www.kdmid.ru', 'id.kdmid.ru', 'reentry.kdmid.ru',
+    'sos.kdmid.ru', 'consreg.kdmid.ru', 'ljubljana.kdmid.ru',
+  ]);
+  const foreignMissions = entries.flatMap((e) =>
+    (e.sources || [])
+      .filter((u) => {
+        try { const h = new URL(u).hostname; return h.endsWith('kdmid.ru') && !KDMID_OK.has(h); } catch { return false; }
+      })
+      .map((u) => `${e.id} → ${new URL(u).hostname}`)
+  );
+  if (foreignMissions.length) {
+    console.error(`  ✗ ссылки на консульства других стран: ${foreignMissions.join(', ')}`);
+    process.exitCode = 1;
+  }
+
+  /* Одна и та же ссылка дважды в одном ответе — след ручной правки. */
+  const dupSources = entries
+    .filter((e) => new Set(e.sources || []).size !== (e.sources || []).length)
+    .map((e) => e.id);
+  if (dupSources.length) {
+    console.error(`  ✗ повторяющиеся источники: ${dupSources.join(', ')}`);
+    process.exitCode = 1;
+  }
 
   const badCats = entries.filter((e) => !categories.some((c) => c.id === e.cat));
-  if (badCats.length) console.warn(`  ⚠ неизвестная категория: ${badCats.map((e) => e.id).join(', ')}`);
+  if (badCats.length) { warnings += 1; console.warn(`  ⚠ неизвестная категория: ${badCats.map((e) => e.id).join(', ')}`); }
 
   // ссылки вида wiki.html#id со страниц сайта должны существовать
   const html = files.filter(([n]) => n.endsWith('.html')).map(([, c]) => c).join('');
@@ -877,7 +915,7 @@ async function build() {
   const anchors = [...html.matchAll(/href="wiki\.html#([a-z0-9-]+)"/g)].map((m) => m[1]);
   const known = new Set([...ids, ...categories.map((c) => c.id)]);
   const badAnchors = [...new Set(anchors.filter((a) => !known.has(a)))];
-  if (badAnchors.length) console.warn(`  ⚠ ссылки на несуществующие якоря: ${badAnchors.join(', ')}`);
+  if (badAnchors.length) { warnings += 1; console.warn(`  ⚠ ссылки на несуществующие якоря: ${badAnchors.join(', ')}`); }
 
   // Инлайновые атрибуты style запрещены: политика CSP на продакшене
   // (style-src 'self', без unsafe-inline) вырезает их молча, и вёрстка
@@ -891,8 +929,14 @@ async function build() {
     process.exitCode = 1;
   }
 
-  if (!dupes.length && !badRelated.length && !badCats.length && !badAnchors.length && !inlineStyles.length) {
-    console.log('  ✓ проверки пройдены: ссылки, якоря, категории, отсутствие инлайновых стилей');
+  /* Условие успеха перечисляло проверки поимённо, и добавленная проверка
+     в него не попала: сборка ругалась на ошибку и тут же печатала «пройдено».
+     Считаем замечания там же, где их выводим, — тогда новая проверка
+     учитывается сама. */
+  if (warnings === 0 && !process.exitCode) {
+    console.log('  ✓ проверки пройдены: ссылки, якоря, категории, источники, отсутствие инлайновых стилей');
+  } else {
+    console.log(`  — проверки завершились с замечаниями: ${warnings + (process.exitCode ? 1 : 0)}`);
   }
 }
 
