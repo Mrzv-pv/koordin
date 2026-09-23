@@ -17,7 +17,11 @@ import { createHash } from 'node:crypto';
 import { extname, join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { site, categories, entries, byCategory, consultants } from './src/content.js';
+import { site, categories as allCategories, entries, byCategory, consultants } from './src/content.js';
+
+/* Раздел без записей не показываем: пустая строка в навигации выглядит
+   поломкой, а не «скоро будет». Наполнится — появится сам. */
+const categories = allCategories.filter((c) => byCategory(c.id).length > 0);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, 'dist');
@@ -196,8 +200,96 @@ const urgentBand = () => `
         <a href="wiki.html#emergency">Что делать в кризисной ситуации ${icon('arrow', 15)}</a>
       </div>`;
 
-const answerText = (e) =>
-  [e.lead, ...(e.points || []), ...(e.next || [])].filter(Boolean).join(' ');
+/**
+ * Читаемое имя источника вместо голого хоста.
+ *
+ * «zavezanec.zzzs.si» ничего не говорит человеку, «ZZZS» говорит сразу.
+ * Неизвестные хосты показываются как есть — это лучше, чем врать названием.
+ */
+const SOURCE_NAMES = [
+  [/(^|\.)zzzs\.si$/, 'ZZZS'],
+  [/(^|\.)fu\.gov\.si$|durs\.si$/, 'FURS'],
+  [/^e-uprava\.gov\.si$/, 'eUprava'],
+  [/^spot\.gov\.si$/, 'SPOT'],
+  [/^podatki\.gov\.si$/, 'Открытые данные'],
+  [/^esamonarocanje\.gov\.si$/, 'eNaročanje'],
+  [/(^|\.)gov\.si$/, 'gov.si'],
+  [/(^|\.)uradni-list\.si$/, 'Uradni list'],
+  [/(^|\.)sodisce\.si$|^nasodiscu\.si$|^iskalniksodneprakse\.si$|^sodnapraksa\.si$/, 'Суды Словении'],
+  [/(^|\.)zpiz\.si$/, 'ZPIZ'],
+  [/(^|\.)ajpes\.si$/, 'AJPES'],
+  [/(^|\.)ess\.gov\.si$/, 'ZRSZ'],
+  [/(^|\.)policija\.si$/, 'Полиция Словении'],
+  [/(^|\.)dars\.si$/, 'DARS'],
+  [/(^|\.)ip-rs\.si$/, 'Информационный уполномоченный'],
+  [/(^|\.)e-justice\.europa\.eu$/, 'e-Justice, ЕС'],
+  [/(^|\.)europa\.eu$/, 'Евросоюз'],
+  [/(^|\.)kdmid\.ru$/, 'МИД России'],
+  [/(^|\.)nalog\.gov\.ru$/, 'ФНС России'],
+  [/(^|\.)government\.ru$|(^|\.)pravo\.gov\.ru$|(^|\.)kremlin\.ru$/, 'Официальные акты РФ'],
+  [/(^|\.)sfr\.gov\.ru$|(^|\.)pfr\.gov\.ru$/, 'СФР России'],
+  [/(^|\.)zakonodaja\.com$|(^|\.)racunovodstvo\.net$|(^|\.)pisrs\.si$/, 'Текст закона'],
+  [/(^|\.)ezdrav\.si$|^zvem\.ezdrav\.si$/, 'zVEM'],
+  [/(^|\.)uni-lj\.si$|(^|\.)evs\.gov\.si$/, 'Вузы Словении'],
+  [/(^|\.)zadusevnozdravje\.si$|(^|\.)nijz\.si$/, 'NIJZ'],
+  [/(^|\.)epc\.si$/, 'Европейский потребительский центр'],
+  [/^slovenia\.mid\.ru$/, 'Посольство России в Словении'],
+  [/(^|\.)eur-lex\.europa\.eu$/, 'EUR-Lex'],
+  [/(^|\.)hcch\.net$/, 'Гаагская конференция'],
+  [/(^|\.)stat\.si$/, 'SURS'],
+  [/(^|\.)bsi\.si$/, 'Банк Словении'],
+  [/(^|\.)rtvslo\.si$/, 'RTV Slovenija'],
+  [/(^|\.)notar-z\.si$/, 'Нотариальная палата Словении'],
+  [/(^|\.)varuh-rs\.si$/, 'Омбудсмен Словении'],
+  [/(^|\.)infotujci\.si$/, 'InfoTujci'],
+  [/(^|\.)ric\.si$/, 'RIC'],
+  [/(^|\.)srips-rs\.si$/, 'Стипендиальный фонд'],
+  [/(^|\.)centerslo\.si$|(^|\.)cene-stupar\.si$/, 'Курсы словенского'],
+  [/(^|\.)zsss\.si$/, 'Профсоюзы Словении'],
+  [/(^|\.)zbs-giz\.si$/, 'Банковская ассоциация'],
+  [/(^|\.)gzs\.si$/, 'Торговая палата Словении'],
+  [/(^|\.)zdaj\.net$/, 'NIJZ'],
+  [/(^|\.)ssom\.si$|(^|\.)seps\.si$|(^|\.)studentska-prehrana\.si$/, 'Студенческие службы'],
+  [/^xn--90aivcdt6dxbc\.xn--p1ai$/, 'объясняем.рф'],
+];
+
+const sourceName = (url) => {
+  let host = url;
+  try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { /* оставляем как есть */ }
+  const hit = SOURCE_NAMES.find(([re]) => re.test(host));
+  return hit ? hit[1] : host;
+};
+
+/* Текст ответа для Schema.org. Полный ответ уже есть в разметке страницы,
+   поэтому в JSON-LD кладём только суть — краткий ответ и пункты, с потолком
+   по длине. Иначе граф дублирует всю страницу целиком: на 134 записях это
+   треть веса wiki.html. Обрезаем по границе предложения, чтобы фрагмент
+   оставался связным и совпадал с началом видимого текста. */
+const ANSWER_MAX = 700;
+/* Подпись для «Смотрите также». Целый вопрос в роли ссылки не читается:
+   три подряд превращаются в абзац. Вопросы у нас построены одинаково — суть
+   стоит до двоеточия или тире, дальше идут уточнения, — поэтому берём голову
+   фразы, а целиком вопрос оставляем в подсказке. */
+const shortQ = (q) => {
+  const head = q.split(/[:—?(]/)[0].trim().replace(/[,\s]+$/, '');
+  if (head.length >= 14 && head.length <= 58) return head;
+  if (head.length > 58) {
+    const cut = head.slice(0, 58);
+    return `${cut.slice(0, cut.lastIndexOf(' ')) || cut}…`;
+  }
+  const full = q.replace(/\?$/, '');
+  if (full.length <= 58) return full;
+  const cut = full.slice(0, 58);
+  return `${cut.slice(0, cut.lastIndexOf(' ')) || cut}…`;
+};
+
+const answerText = (e) => {
+  const full = [e.lead, ...(e.points || [])].filter(Boolean).join(' ');
+  if (full.length <= ANSWER_MAX) return full;
+  const cut = full.slice(0, ANSWER_MAX);
+  const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('; '));
+  return stop > ANSWER_MAX / 2 ? cut.slice(0, stop + 1) : `${cut.trimEnd()}…`;
+};
 
 const entryHtml = (e) => {
   const points = (e.points || []).length
@@ -222,27 +314,35 @@ const entryHtml = (e) => {
     ? `\n            <p class="related"><span>Смотрите также:</span> ${e.related
         .map((id) => {
           const t = entries.find((x) => x.id === id);
-          return t ? `<a href="#${t.id}">${esc(t.q)}</a>` : '';
+          return t ? `<a href="#${t.id}" title="${esc(t.q)}">${esc(shortQ(t.q))}</a>` : '';
         })
         .filter(Boolean)
-        .join(', ')}</p>`
+        .join(' ')}</p>`
     : '';
 
-  const sources = (e.sources || []).length
-    ? `<span class="srcs">Источники: ${e.sources
-        .map((u) => {
-          let host = u;
-          try { host = new URL(u).hostname.replace(/^www\./, ''); } catch { /* оставляем как есть */ }
-          return `<a href="${attr(u)}" rel="noopener noreferrer" target="_blank">${esc(host)}</a>`;
-        })
-        .join(' ')}</span>`
+  /* Два зеркала одного закона дают два одинаковых ярлыка подряд — это шум.
+     Оставляем первую ссылку на каждое имя источника. */
+  const seenSrc = new Set();
+  const srcList = (e.sources || []).filter((u) => {
+    const n = sourceName(u);
+    if (seenSrc.has(n)) return false;
+    seenSrc.add(n);
+    return true;
+  });
+  const sources = srcList.length
+    ? `\n            <p class="entry__sources"><span>Источники:</span> ${srcList
+        .map(
+          (u) =>
+            `<a href="${attr(u)}" rel="noopener noreferrer" target="_blank">${esc(sourceName(u))}</a>`
+        )
+        .join('')}</p>`
     : '';
 
   return `
           <details class="entry${e.urgent ? ' is-urgent' : ''}" id="${e.id}">
             <summary><span class="q">${esc(e.q)}</span></summary>
             <div class="entry__body">
-              <p class="entry__lead">${esc(e.lead)}</p>${points}${next}${terms}${caveat}${related}
+              <p class="entry__lead">${esc(e.lead)}</p>${points}${next}${terms}${caveat}${sources}${related}
               <div class="entry__foot">
                 <span class="checked${e.confidence === 'partly-verified' ? ' is-partial' : ''}">${
                   e.confidence === 'partly-verified'
@@ -250,7 +350,6 @@ const entryHtml = (e) => {
                     : `Проверено ${ruDate(e.checked)}`
                 }</span>
                 ${e.volatile ? '<span class="volatile">Сумма или ставка — меняется ежегодно</span>' : ''}
-                ${sources}
                 <button class="copy-link" type="button" data-id="${e.id}">Ссылка на вопрос</button>
               </div>
             </div>

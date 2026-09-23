@@ -656,6 +656,40 @@ a:hover { color: var(--accent-2); }
 .entry__next li:last-child { margin-bottom: 0; }
 
 .entry__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+
+/* Источники — не служебная сноска, а часть ответа: на них держится
+   всё доверие к справочнику, поэтому они стоят под текстом, а не
+   в мелком подвале вместе с датой. */
+.entry__sources {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px;
+  margin: 16px 0 0; font-size: 14.5px; line-height: 1.5;
+}
+.entry__sources > span { color: var(--ink-3); }
+.entry__sources a {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent-wash);
+  text-decoration: none;
+}
+.entry__sources a:hover { border-bottom-color: currentColor; }
+.entry__sources a + a { margin-left: 2px; }
+.entry__sources a:not(:last-child)::after { content: " ·"; color: var(--ink-4); }
+/* «Смотрите также» — соседние ответы. Держим его визуально тише, чем
+   источники: источник подтверждает ответ, а это просто дорожка дальше.
+   Поэтому ссылки серо-синие, а не акцентные, и блок отделён чертой. */
+.related {
+  margin: 16px 0 0; padding-top: 13px;
+  border-top: 1px dashed var(--rule);
+  font-size: 14.5px; line-height: 1.6; color: var(--ink-3);
+}
+.related > span { color: var(--ink-4); }
+.related a {
+  color: var(--slate);
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+}
+.related a:hover { color: var(--accent); border-bottom-color: var(--accent-wash); }
+.related a:not(:last-child)::after { content: " ·"; color: var(--ink-4); border-bottom: 0; }
+
 .term { font-size: 13.5px; padding: 2px 9px; background: var(--slate-wash); color: var(--slate); white-space: nowrap; }
 
 .caveat {
@@ -677,7 +711,6 @@ a:hover { color: var(--accent-2); }
 .entry__foot .checked.is-partial { color: var(--ochre); }
 .entry__foot .checked.is-partial::before { background: var(--ochre); }
 .entry__foot .volatile { color: var(--ochre); }
-.entry__foot .srcs { display: inline-flex; flex-wrap: wrap; gap: 4px 12px; }
 .entry__foot a { color: var(--ink-3); }
 .entry__foot a:hover { color: var(--accent); }
 
@@ -848,8 +881,33 @@ a:hover { color: var(--accent-2); }
     background: var(--paper); border-bottom: 1px solid var(--rule);
   }
   .sidebar h2 { display: none; }
-  .sidebar ul { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+  /* Разделов двенадцать, а в строку помещается пять. Полоса прокручивается
+     вбок, но без подсказки читатель не догадывается, что за краем что-то есть,
+     и просто не видит семь разделов. Растушёвываем правый край: обрезанный
+     наполовину пункт — единственный честный сигнал «листай дальше».
+     Сделать перенос на несколько строк нельзя: полоса прилипшая, и выросшая
+     до четырёх строк шапка съела бы пол-экрана. */
+  .sidebar ul {
+    display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none;
+    scroll-snap-type: x proximity; padding-right: 28px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  }
+  .sidebar li { scroll-snap-align: start; }
   .sidebar ul::-webkit-scrollbar { display: none; }
+  /* Докрутив до конца, читатель не должен видеть вечно приглушённый
+     последний пункт — там подсказка уже не нужна. */
+  @supports (animation-timeline: scroll(x)) {
+    .sidebar ul {
+      animation: fade-tail linear both;
+      animation-timeline: scroll(x);
+      animation-range: contain;
+    }
+  }
+  @keyframes fade-tail {
+    from { mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+    to { mask-image: linear-gradient(to right, #000 100%, #000); }
+  }
   .sidebar li { border-bottom: 0; }
   .sidebar a { border-left: 0; border-bottom: 2px solid transparent; padding: 4px 0; margin-left: 0; white-space: nowrap; }
   .sidebar a.is-active { border-left: 0; border-bottom-color: var(--accent); }
