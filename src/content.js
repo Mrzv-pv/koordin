@@ -472,7 +472,7 @@ export const entries = [
     terms: ["SZ-1","SZ-1E","odpoved najemne pogodbe","odpovedni rok","opomin","krivdni odpovedni razlogi","tožba","okrajno sodišče","motenje posesti"],
     checked: "2026-09-18",
     confidence: "verified",
-    sources: ["https://www.racunovodstvo.net/zakonodaja/sz-1/112-clen","https://www.pravnisos.si/objava/kako-izseliti-najemnika-posodobitev-po-sz-1e/","https://zakonodaja.com/zakon/sz-1/vi7-poglavje-odpoved-najemne-pogodbe","https://data.si/blog/odpoved-najemne-pogodbe/"],
+    sources: ["https://pisrs.si/pregledPredpisa?id=ZAKO2008","https://www.racunovodstvo.net/zakonodaja/sz-1/112-clen","https://www.pravnisos.si/objava/kako-izseliti-najemnika-posodobitev-po-sz-1e/","https://zakonodaja.com/zakon/sz-1/vi7-poglavje-odpoved-najemne-pogodbe","https://data.si/blog/odpoved-najemne-pogodbe/"],
     caveat: "Многие сайты и старые тексты договоров до сих пор указывают прежний срок предупреждения собственника в 90 дней и срок выселения 60–90 дней — они не учитывают поправку SZ-1E 2021 года. Для неоплаты аренды существует особый ускоренный порядок по ст. 112.a.",
   },
   {
@@ -527,7 +527,7 @@ export const entries = [
     terms: ["Zakon o tujcih (ZTuj-2)","dovoljenje za začasno prebivanje","združitev družine","ZZSDT","digitalni nomad"],
     checked: "2026-09-18",
     confidence: "partly-verified",
-    sources: ["https://www.racunovodstvo.net/zakonodaja/ztuj-2/35-clen","https://zakonodaja.com/zakon/ztuj-2/34-clen-prvo-dovoljenje-za-zacasno-prebivanje","https://zakonodaja.com/zakon/zzsdt/15-clen-pogoj-za-samozaposlitev","https://www.iusinfo.si/medijsko-sredisce/dnevne-novice/uveljavitev-novele-ztuj-2i-slovenija-uvaja-posebno-dovoljenje-za-zacasno-prebivanje-za-digitalne-nomade-321239"],
+    sources: ["https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-1891/zakon-o-tujcih-uradno-precisceno-besedilo-ztuj-2-upb15","https://pisrs.si/pregledPredpisa?id=ZAKO5761","https://www.racunovodstvo.net/zakonodaja/ztuj-2/35-clen","https://zakonodaja.com/zakon/ztuj-2/34-clen-prvo-dovoljenje-za-zacasno-prebivanje","https://zakonodaja.com/zakon/zzsdt/15-clen-pogoj-za-samozaposlitev"],
     caveat: "Порог дохода для цифровых кочевников привязан к двукратной средней чистой зарплате и пересчитывается; цифра около 3 200 € в месяц приводится профильной публикацией на момент введения нормы в ноябре 2025 года, а не самим законом.",
   },
   {
@@ -541,7 +541,7 @@ export const entries = [
     terms: ["enotno dovoljenje za prebivanje in delo","upravna enota","soglasje","Zavod RS za zaposlovanje (ZRSZ)"],
     checked: "2026-09-18",
     confidence: "verified",
-    sources: ["https://www.racunovodstvo.net/zakonodaja/ztuj-2/37-clen","https://zakonodaja.com/zakon/ztuj-2/37-clen-enotno-dovoljenje-za-prebivanje-in-delo"],
+    sources: ["https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-1891/zakon-o-tujcih-uradno-precisceno-besedilo-ztuj-2-upb15","https://pisrs.si/pregledPredpisa?id=ZAKO5761","https://www.racunovodstvo.net/zakonodaja/ztuj-2/37-clen","https://zakonodaja.com/zakon/ztuj-2/37-clen-enotno-dovoljenje-za-prebivanje-in-delo"],
     caveat: "Отдельные категории (синяя карта ЕС, внутрикорпоративный перевод, сезонная работа) регулируются своими статьями с иными сроками.",
   },
   {
@@ -555,7 +555,7 @@ export const entries = [
     terms: ["prošnja za podaljšanje dovoljenja","potrdilo o vloženi prošnji","prvo dovoljenje","upravna enota"],
     checked: "2026-09-18",
     confidence: "verified",
-    sources: ["https://www.racunovodstvo.net/zakonodaja/ztuj-2/36-clen","https://zakonodaja.com/zakon/ztuj-2/36-clen-podaljsanje-dovoljenja-za-prebivanje-in-izdaja-nadaljnjih-dovoljenj","https://zakonodaja.com/zakon/ztuj-2/34-clen-prvo-dovoljenje-za-zacasno-prebivanje"],
+    sources: ["https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-1891/zakon-o-tujcih-uradno-precisceno-besedilo-ztuj-2-upb15","https://pisrs.si/pregledPredpisa?id=ZAKO5761","https://www.racunovodstvo.net/zakonodaja/ztuj-2/36-clen","https://zakonodaja.com/zakon/ztuj-2/36-clen-podaljsanje-dovoljenja-za-prebivanje-in-izdaja-nadaljnjih-dovoljenj","https://zakonodaja.com/zakon/ztuj-2/34-clen-prvo-dovoljenje-za-zacasno-prebivanje"],
     caveat: "Закон не устанавливает единой «минимальной» даты, с которой можно подавать; практика приёма документов в конкретной upravna enota может различаться — уточняйте у своей.",
   },
   {
@@ -664,7 +664,7 @@ export const entries = [
     terms: ["pravni pouk","pritožba","Ministrstvo za notranje zadeve (MNZ)","upravni spor","Upravno sodišče","ZUS-1"],
     checked: "2026-09-18",
     confidence: "verified",
-    sources: ["https://www.racunovodstvo.net/zakonodaja/ztuj-2/87-clen","https://www.racunovodstvo.net/zakonodaja/ztuj-2/36-clen","https://zakonodaja.com/zakon/ztuj-2/55-clen-zavrnitev-izdaje-dovoljenja-za-prebivanje","https://zakonodaja.com/zakon/zus-1/28-clen"],
+    sources: ["https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-1891/zakon-o-tujcih-uradno-precisceno-besedilo-ztuj-2-upb15","https://pisrs.si/pregledPredpisa?id=ZAKO4732","https://www.racunovodstvo.net/zakonodaja/ztuj-2/87-clen","https://www.racunovodstvo.net/zakonodaja/ztuj-2/36-clen","https://zakonodaja.com/zakon/ztuj-2/55-clen-zavrnitev-izdaje-dovoljenja-za-prebivanje"],
     caveat: "Перечень статей, по которым жалоба исключена, шире приведённых примеров и менялся с поправками к ZTuj-2; ориентируйтесь на «pravni pouk» в своём решении. Жалоба сама по себе не всегда приостанавливает исполнение.",
   },
   {
@@ -2075,7 +2075,7 @@ export const entries = [
     terms: ["naročniška pogodba","obdobje vezave","ZEKom-2","samodejno podaljšanje","odpovedni rok","odstop od naročniške pogodbe","terminalska oprema","trajni nosilec podatkov","AKOS"],
     checked: "2026-09-23",
     confidence: "verified",
-    sources: ["https://www.racunovodstvo.net/zakonodaja/zekom/191-clen","https://www.racunovodstvo.net/zakonodaja/zekom/190-clen","https://www.racunovodstvo.net/zakonodaja/zekom/192-clen","https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2022-01-3081/zakon-o-elektronskih-komunikacijah-zekom-2","https://www.akos-rs.si/uporabniki-storitev/raziscite/koristni-nasveti-in-opozorila/novica/opozorilo-za-koncne-uporabnike-nova-pravila-obvescanja-o-spremembah-narocniskih-pogodb-pri-spremembah-programov-2"],
+    sources: ["https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2022-01-3081/zakon-o-elektronskih-komunikacijah-zekom-2","https://www.gov.si/teme/elektronske-komunikacije/","https://www.racunovodstvo.net/zakonodaja/zekom/191-clen","https://www.racunovodstvo.net/zakonodaja/zekom/190-clen","https://www.racunovodstvo.net/zakonodaja/zekom/192-clen"],
     caveat: "Статьи 190–192 ZEKom-2 сверены с официальным текстом в Uradnem listu RS, št. 130/2022. Размер компенсации за досрочное расторжение закон суммой не называет: он считается по вашему договору и зависит от полученных скидок; за оборудование по акционной цене компенсация не может превышать его распределённой по времени стоимости или остатка платежей за услугу до конца привязки — смотря что меньше. С 26 июля 2026 года действует splošni akt AKOS о форме и способе публикации уведомления об изменении условий: при изменении телепрограмм оператор вправе уведомить через телевизионный интерфейс, и такое уведомление должно показываться не меньше 60 дней или до подтверждения прочтения. Порядок жалобы оператору и в AKOS мы здесь не проверяли.",
   },
   {

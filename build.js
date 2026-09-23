@@ -356,21 +356,33 @@ const entryHtml = (e) => {
         .join(' ')}</p>`
     : '';
 
-  /* Два зеркала одного закона дают два одинаковых ярлыка подряд — это шум.
-     Оставляем первую ссылку на каждое имя источника. */
-  const seenSrc = new Set();
+  /* Раньше здесь отбрасывались все ссылки с повторяющимся ярлыком — мол,
+     два зеркала одного закона подряд это шум. Но на одном ведомстве лежат
+     разные страницы: три ссылки на FURS — это три разных разъяснения, а не
+     дубли. Так из виду пропадала треть источников: у «обжалования отказа»
+     читателю показывали одну ссылку из четырёх. Теперь убираем только
+     буквальные повторы URL, а одинаковые ярлыки нумеруем — ссылки остаются
+     различимыми и все доступны. */
+  const seenUrl = new Set();
   const srcList = (e.sources || []).filter((u) => {
-    const n = sourceName(u);
-    if (seenSrc.has(n)) return false;
-    seenSrc.add(n);
+    if (seenUrl.has(u)) return false;
+    seenUrl.add(u);
     return true;
   });
+  const labelCount = {};
+  srcList.forEach((u) => {
+    const n = sourceName(u);
+    labelCount[n] = (labelCount[n] || 0) + 1;
+  });
+  const shown = {};
   const sources = srcList.length
     ? `\n            <p class="entry__sources"><span>Источники:</span> ${srcList
-        .map(
-          (u) =>
-            `<a href="${attr(u)}" rel="noopener noreferrer" target="_blank">${esc(sourceName(u))}</a>`
-        )
+        .map((u) => {
+          const n = sourceName(u);
+          shown[n] = (shown[n] || 0) + 1;
+          const label = labelCount[n] > 1 ? `${n} ${shown[n]}` : n;
+          return `<a href="${attr(u)}" rel="noopener noreferrer" target="_blank">${esc(label)}</a>`;
+        })
         .join('')}</p>`
     : '';
 
