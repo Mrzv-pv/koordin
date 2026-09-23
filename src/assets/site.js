@@ -86,21 +86,28 @@
       if (block) block.hidden = false;
     }
     if (scroll === false) return;
-    /* Прокручиваем сразу, а не из requestAnimationFrame: в фоновой вкладке
-       кадры не рисуются и колбэк не выполнится — человек вернётся к вкладке
-       и обнаружит себя в начале списка. */
-    el.scrollIntoView({ block: 'start' });
+    /* behavior: 'instant', а не плавно: плавную прокрутку, начатую во время
+       загрузки, браузер обрывает — и человек остаётся в начале списка.
+       Из requestAnimationFrame тоже нельзя: в фоновой вкладке кадры не
+       рисуются и колбэк не выполнится. */
+    el.scrollIntoView({ block: 'start', behavior: 'instant' });
   };
 
   /* При загрузке ждём шрифты: без них высоты ответов другие, и прокрутка
      уезжает на пару экранов. Если шрифты не отдались, всё равно прокручиваем. */
   if (location.hash) {
+    /* Браузер восстанавливает прежнюю позицию прокрутки уже после того, как
+       скрипт отработал, и затирает наш переход к ответу. На странице, открытой
+       по ссылке на конкретный вопрос, восстанавливать нечего — отключаем. */
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     openFromHash();
     /* Шрифты меняют высоту ответов, и первая прокрутка уезжает на пару
-       экранов. Когда они догрузятся — наводимся ещё раз. */
+       экранов. Наводимся ещё раз, когда они догрузятся и когда догрузится
+       остальное: до этого момента высоты ещё не окончательные. */
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { openFromHash(); }, function () {});
     }
+    window.addEventListener('load', function () { openFromHash(); });
   }
   window.addEventListener('hashchange', function () { openFromHash(); });
 
