@@ -54,14 +54,20 @@ const titleOf = (html) => {
   return `${strip(t)} ${strip(h)}`.trim();
 };
 
-/* Ссылка на конкретную страницу, которую молча увели на главную, тоже
-   мертва: читатель не найдёт того, ради чего шёл. */
-const droppedToHome = (asked, landed) => {
+/* Ссылка на конкретную страницу, которую молча увели выше по дереву, тоже
+   мертва: читатель не найдёт того, ради чего шёл. Ловим и увод на главную,
+   и увод в родительский раздел — так страница СФР про акт о личной явке
+   отдавала общий раздел «проживающим за рубежом», и по коду ответа это
+   было не видно. Проверяем, что конечный путь — строгий предок исходного. */
+const droppedUp = (asked, landed) => {
   try {
     const a = new URL(asked), b = new URL(landed);
-    const deep = a.pathname.replace(/\/$/, '').length > 1;
-    const home = b.pathname.replace(/\/$/, '').length <= 1 && !b.search;
-    return deep && home && a.hostname === b.hostname;
+    if (a.hostname !== b.hostname) return false;
+    const strip = (x) => x.pathname.replace(/\/+$/, '');
+    const from = strip(a), to = strip(b);
+    if (from.length <= 1 || to.length >= from.length) return false;
+    if (b.search) return false;
+    return to === '' || from.startsWith(`${to}/`);
   } catch { return false; }
 };
 
@@ -85,8 +91,8 @@ async function probe({ id, url }, attempt = 1) {
     if (NOT_FOUND.test(head)) {
       return { id, url, status: r.status, ok: false, error: `мягкий 404: «${head.slice(0, 60)}»` };
     }
-    if (droppedToHome(url, r.url)) {
-      return { id, url, status: r.status, ok: false, error: 'увело на главную' };
+    if (droppedUp(url, r.url)) {
+      return { id, url, status: r.status, ok: false, error: `увело выше: ${r.url}` };
     }
     return { id, url, status: r.status, ok: true };
   } catch (err) {

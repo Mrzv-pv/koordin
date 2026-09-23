@@ -17,7 +17,11 @@
       "source": "/legalhelp",
       "destination": "/wiki.html",
       "permanent": true
-    }
+    },
+    { "source": "/wiki", "destination": "/wiki.html", "permanent": true },
+    { "source": "/about", "destination": "/about.html", "permanent": true },
+    { "source": "/contacts", "destination": "/contacts.html", "permanent": true },
+    { "source": "/privacy", "destination": "/privacy.html", "permanent": true }
   ],
 
   "headers": [

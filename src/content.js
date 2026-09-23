@@ -238,7 +238,7 @@ export const entries = [
     checked: "2026-09-18",
     confidence: "partly-verified",
     volatile: true,
-    sources: ["https://zavarovanec.zzzs.si/vkljucitev-v-obvezno-zdravstveno-zavarovanje-in-pridobitev-kartice-zdravstvenega-zavarovanja/vkljucitev-v-obvezno-zdravstveno-zavarovanje/","https://zavarovanec.zzzs.si/vkljucitev-v-obvezno-zdravstveno-zavarovanje-in-pridobitev-kartice-zdravstvenega-zavarovanja/kategorije-zavarovanih-oseb/osebe-s-stalnim-prebivaliscem-v-republiki-sloveniji-ki-ne-izpolnjujejo-pogojev-za-zavarovanje-po-kateri-drugi-tocki-15-clena-zzvzz/","https://www.fu.gov.si/fileadmin/Internet/Davki_in_druge_dajatve/Podrocja/Prispevki_za_socialno_varnost/Opis/Brosura_o_placevanju_prispevkov_za_socialno_varnost.doc","http://infotujci.si/vsebina/zivljenje-v-sloveniji/zdravstveno-varstvo-2/"],
+    sources: ["https://zavarovanec.zzzs.si/vkljucitev-v-obvezno-zdravstveno-zavarovanje-in-pridobitev-kartice-zdravstvenega-zavarovanja/vkljucitev-v-obvezno-zdravstveno-zavarovanje/","https://zavarovanec.zzzs.si/vkljucitev-v-obvezno-zdravstveno-zavarovanje-in-pridobitev-kartice-zdravstvenega-zavarovanja/kategorije-zavarovanih-oseb/osebe-s-stalnim-prebivaliscem-v-republiki-sloveniji-ki-ne-izpolnjujejo-pogojev-za-zavarovanje-po-kateri-drugi-tocki-15-clena-zzvzz/","https://www.fu.gov.si/fileadmin/Internet/Davki_in_druge_dajatve/Podrocja/Prispevki_za_socialno_varnost/Opis/Brosura_o_placevanju_prispevkov_za_socialno_varnost.doc","https://infotujci.si/vsebina/zivljenje-v-sloveniji/zdravstveno-varstvo-2/"],
     caveat: "Ставки 6,36 % / 6,56 % / 0,53 % — из брошюры FURS о взносах и могут меняться законом. Категория «самостоятельного» страхования на сайте ZZZS описана как «лица с постоянным местом жительства в РС»; гражданство там не оговорено, поэтому право иностранца с постоянным ВНЖ застраховаться по этому основанию нужно подтвердить в своём отделении ZZZS. Для временного ВНЖ основанием страховки обычно служит работа, самозанятость, учёба или статус члена семьи.",
   },
   {
@@ -292,7 +292,7 @@ export const entries = [
     terms: ["112","113","nujna medicinska pomoč","urgenca","dežurna ambulanta","urgentni center","zdravstveni dom","samoplačnik"],
     checked: "2026-09-18",
     confidence: "partly-verified",
-    sources: ["https://www.gov.si/teme/klic-v-sili/","https://www.policija.si/kontakti/nujni-klici-113","http://infotujci.si/vsebina/zivljenje-v-sloveniji/zdravstveno-varstvo-2/","https://zavezanec.zzzs.si/prispevki-za-obvezno-zdravstveno-zavarovanje/zadrzanje-pravic-nerednim-placnikom-prispevkov/"],
+    sources: ["https://www.gov.si/teme/klic-v-sili/","https://www.policija.si/kontakti/nujni-klici-113","https://infotujci.si/vsebina/zivljenje-v-sloveniji/zdravstveno-varstvo-2/","https://zavezanec.zzzs.si/prispevki-za-obvezno-zdravstveno-zavarovanje/zadrzanje-pravic-nerednim-placnikom-prispevkov/"],
     caveat: "Конкретная сумма счёта за неотложную помощь для незастрахованного не фиксирована законом — каждое учреждение выставляет счёт по собственному прайс-листу, поэтому никакой «стандартной цены urgenca» не существует. Отдельная ситуация — приостановка прав за долги по взносам: с 1 марта 2026 права приостанавливают, если долг превышает 202,88 EUR и прошло 30 дней после письменного уведомления ZZZS; тогда остаётся только неотложное лечение, а остальное вы оплачиваете сами.",
   },
   {
@@ -972,7 +972,7 @@ export const entries = [
     terms: ["najemna pogodba","SZ-1","obratovalni stroški","upravnik","rezervni sklad","varščina","etažni lastnik"],
     checked: "2026-09-18",
     confidence: "partly-verified",
-    sources: ["https://zakonodaja.com/zakon/sz-1/91-clen-bistvene-sestavine-najemne-pogodbe","https://zun-vodnik.gzs.si/druga-pomembna-vprasanja/","https://pisrs.si/pregledNpb?idPredpisa=ZAKO125&idPredpisaChng=ZAKO1002"],
+    sources: ["https://zakonodaja.com/zakon/sz-1/91-clen-bistvene-sestavine-najemne-pogodbe","https://zun-vodnik.gzs.si/druga-pomembna-vprasanja/","https://pisrs.si/pregledPredpisa?id=ZAKO2008"],
     caveat: "Типичные суммы obratovalni stroški и размер залога официальным источником не подтверждаются и сильно зависят от дома и города — требуйте у арендодателя последние счета и конкретные цифры в договоре.",
   },
   {
@@ -1269,8 +1269,8 @@ export const entries = [
     checked: "2026-09-23",
     confidence: "partly-verified",
     volatile: true,
-    sources: ["https://www.kdmid.ru/cons/passports/list-of-documents-required-for-registration-of-foreign-passports/","https://slovenia.mid.ru/ru/consular_service/oformlenie_zagranichnogo_pasporta/","https://www.kdmid.ru/docs/slovenia/russian-consular-offices/","https://veleposlanistvorusije.mid.ru/"],
-    caveat: "Портал ljubljana.kdmid.ru — это только система электронной записи на приём, перечней документов и тарифов там нет; собственный сайт посольства (veleposlanistvorusije.mid.ru) в день проверки содержимое не отдавал. Поэтому перечень документов и трёхмесячный срок взяты с центральных порталов КД МИД и с сайта консульского отдела в Варшаве — общие правила, а не страница Любляны.",
+    sources: ["https://www.kdmid.ru/cons/passports/list-of-documents-required-for-registration-of-foreign-passports/","https://slovenia.mid.ru/ru/consular_service/oformlenie_zagranichnogo_pasporta/","https://www.kdmid.ru/docs/slovenia/russian-consular-offices/"],
+    caveat: "Портал ljubljana.kdmid.ru — это только система электронной записи на приём: перечней документов и тарифов там нет. Перечень и трёхмесячный срок — общие правила КД МИД; страница консульского отдела в Любляне их не переопределяет, но точный состав документов и сбор в вашем случае подтвердите в самом отделе при записи.",
   },
   {
     id: "utrata-zagranpasporta-slovenia",
@@ -1409,7 +1409,7 @@ export const entries = [
     terms: ["акт о личной явке","СФР","СНИЛС","apostille","sodni tolmač"],
     checked: "2026-09-23",
     confidence: "partly-verified",
-    sources: ["https://slovenia.mid.ru/ru/consular_service/pensionnye_voprosy/","https://slovenia.mid.ru/ru/consular_service/prodlenie_vyplaty_pensii_/","https://sfr.gov.ru/grazhdanam/pensionres/pens_zagran/~7887","https://sfr.gov.ru/grazhdanam/prozhivayushchim_za_rubezhom/~532","https://sfr.gov.ru/grazhdanam/prozhivayushchim_za_rubezhom/~8601"],
+    sources: ["https://slovenia.mid.ru/ru/consular_service/pensionnye_voprosy/","https://slovenia.mid.ru/ru/consular_service/prodlenie_vyplaty_pensii_/","https://sfr.gov.ru/grazhdanam/prozhivayushchim_za_rubezhom/~7887","https://sfr.gov.ru/grazhdanam/prozhivayushchim_za_rubezhom/~532","https://sfr.gov.ru/grazhdanam/prozhivayushchim_za_rubezhom/~8601"],
     caveat: "С 23 января 2026 действует постановление Правительства РФ № 10: при невозможности перевода за границу в иностранной валюте выплата приостанавливается, а продолжить её можно по заявлению о доставке — на счёт в России или за рубеж в рублях; такое заявление не требует нотариального или консульского заверения. Подтверждение через Госуслуги требует подтверждённой учётной записи, подписи в «Госключе» и подтверждённой биометрии, которую оформляют только при личном визите в банк на территории России.",
   },
   {
