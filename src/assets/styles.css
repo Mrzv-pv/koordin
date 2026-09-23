@@ -918,6 +918,28 @@ a:hover { color: var(--accent-2); }
 }
 
 @media (max-width: 880px) {
+  /* Три цели не дотягивали до 44 px: кнопка «Записаться» (40), раздел
+     в прилипшей ленте (35) и «Ссылка на вопрос» (26). Увеличивать padding
+     нельзя: лента и шапка прилипшие, а их высота зашита в scroll-padding-top
+     и в top у строки поиска — выросли бы отступы при переходе по якорю.
+     Поэтому растим только зону нажатия псевдоэлементом: по вертикали,
+     где соседних целей нет, так что перехватить чужое нажатие он не может. */
+  .header-cta,
+  .brand,
+  .sidebar a,
+  .copy-link { position: relative; }
+  .header-cta::after,
+  .brand::after,
+  .sidebar a::after,
+  .copy-link::after {
+    content: ''; position: absolute; left: 0; right: 0;
+    top: 50%; transform: translateY(-50%);
+    height: 44px;
+  }
+  /* У разделов уже есть ::after со средней точкой-разделителем — там зону
+     не трогаем, чтобы не сломать разметку. */
+  .related a::after { position: static; transform: none; height: auto; }
+
   /* комфортные цели для пальца: ссылки-строки получают вертикальный отступ */
   .site-footer ul { gap: 2px; }
   .site-footer a { display: inline-block; padding-block: 7px; }
