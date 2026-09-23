@@ -77,10 +77,46 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
+  /* Удалить куку можно только с тем же domain, с каким её поставили.
+     Google Analytics ставит _ga на регистрируемый домен (.koordin.eu),
+     а страница открыта на www.koordin.eu: попытка удалить с
+     domain=.www.koordin.eu тихо не срабатывает, и куки переживают отказ.
+     Поэтому перебираем текущий хост и каждый его родительский домен,
+     с точкой и без. Лишние попытки безвредны: браузер игнорирует те,
+     что не совпали. */
+  function clearGaCookies() {
+    try {
+      var parts = location.hostname.split('.');
+      var scopes = [''];
+      for (var i = 0; i < parts.length - 1; i += 1) {
+        var d = parts.slice(i).join('.');
+        scopes.push('; domain=' + d, '; domain=.' + d);
+      }
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (name.indexOf('_ga') !== 0) return;
+        scopes.forEach(function (scope) {
+          document.cookie = name + '=; Max-Age=0; path=/' + scope;
+        });
+      });
+    } catch (e) {}
+  }
+
   function decide(value) {
     saveChoice(value);
-    if (value === 'granted') startAnalytics();
+    if (value === 'granted') {
+      startAnalytics();
+      closeBanner();
+      return;
+    }
+    /* Отказ после согласия — обычный сценарий: человек однажды нажал
+       «Принять», потом передумал. Куки со сроком жизни в два года надо
+       убрать, а уже запущенный в этой вкладке счётчик — остановить;
+       выгрузить gtag нельзя, поэтому перезагружаем страницу. */
+    var hadAnalytics = !!window.gtag;
+    clearGaCookies();
     closeBanner();
+    if (hadAnalytics) location.reload();
   }
 
   function buildBanner() {
@@ -159,27 +195,22 @@
     status: readChoice,
     revoke: function () {
       saveChoice('denied');
-      /* счётчик мог успеть запуститься в этой вкладке — гасим его куки */
-      try {
-        document.cookie.split(';').forEach(function (c) {
-          var name = c.split('=')[0].trim();
-          if (name.indexOf('_ga') === 0) {
-            document.cookie = name + '=; Max-Age=0; path=/';
-            document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname;
-          }
-        });
-      } catch (e) {}
+      clearGaCookies();
+      if (window.gtag) location.reload();
     },
   };
 
   function init() {
-    var link = document.querySelector('[data-consent-open]');
-    if (link) {
+    /* Не querySelector: на странице о данных таких ссылок две — в тексте
+       и в подвале, — и обработчик доставался только первой. Вторая молча
+       никуда не вела. */
+    var links = document.querySelectorAll('[data-consent-open]');
+    Array.prototype.forEach.call(links, function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
         showBanner();
       });
-    }
+    });
 
     if (isLocal) return;
 

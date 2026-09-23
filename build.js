@@ -41,6 +41,18 @@ const plural = (n, [one, few, many]) => {
 };
 
 const nQuestions = (n) => `${n} ${plural(n, ['вопрос', 'вопроса', 'вопросов'])}`;
+const nAnswers = (n) => `${n} ${plural(n, ['ответ', 'ответа', 'ответов'])}`;
+
+/* Дата обновления жила в content.js строкой и отставала: в карте сайта стояло
+   18 сентября, когда ответы правились 23-го, и краулер получал сигнал «ничего
+   не менялось». Берём самую свежую дату сверки — она обновляется сама вместе
+   с ответами. */
+const UPDATED = entries.map((e) => e.checked).filter(Boolean).sort().pop() || site.updated;
+
+/* Число ответов в описании сайта не должно устаревать: оно жило в content.js
+   строкой и полгода обещало 59 ответов, когда их было 134. Подставляем при
+   сборке. После «из» нужен родительный падеж — там всегда «ответов». */
+const DESCRIPTION = site.description.replace('{N}', String(entries.length));
 
 const ruDate = (iso) => {
   const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
@@ -93,14 +105,19 @@ const NAV_LINKS = [
   ['contacts.html', 'Контакты'],
 ];
 
-const layout = ({ title, description, current, canonical, body, head = '' }) => `<!DOCTYPE html>
+/* Картинка для превью ссылки. Без неё репост в мессенджер выглядит голой
+   строкой текста, а справочник чаще всего и пересылают ссылкой. Берём ту же
+   фотографию, что и на первом экране: она уже лежит в assets и закеширована. */
+const OG_IMAGE = `${site.url}/assets/img/justice-1400.jpg`;
+
+const layout = ({ title, description, current, canonical, body, head = '', robots = '' }) => `<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${attr(description)}">
-<link rel="canonical" href="${site.url}/${canonical}">
+${robots ? `<meta name="robots" content="${attr(robots)}">\n` : ''}<link rel="canonical" href="${site.url}/${canonical}">
 <link rel="icon" href="${FAVICON}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${attr(site.name)}">
@@ -108,7 +125,13 @@ const layout = ({ title, description, current, canonical, body, head = '' }) => 
 <meta property="og:description" content="${attr(description)}">
 <meta property="og:url" content="${site.url}/${canonical}">
 <meta property="og:locale" content="ru_RU">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${OG_IMAGE}">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="933">
+<meta property="og:image:alt" content="${attr(site.name)} — ${attr(site.tagline)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${OG_IMAGE}">
+<script type="application/ld+json">${orgGraph()}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;600;700&display=swap">
@@ -169,7 +192,7 @@ ${body}
     </div>
     <div class="site-footer__base">
       <span>© ${new Date().getFullYear()} ${esc(site.name)}</span>
-      <span>Библиотека обновлена ${ruDate(site.updated)}</span>
+      <span>Библиотека обновлена ${ruDate(UPDATED)}</span>
       <span>${nQuestions(entries.length)}</span>
     </div>
   </div>
@@ -294,8 +317,14 @@ const answerText = (e) => {
   const full = [e.lead, ...(e.points || [])].filter(Boolean).join(' ');
   if (full.length <= ANSWER_MAX) return full;
   const cut = full.slice(0, ANSWER_MAX);
-  const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('; '));
-  return stop > ANSWER_MAX / 2 ? cut.slice(0, stop + 1) : `${cut.trimEnd()}…`;
+  const dot = cut.lastIndexOf('. ');
+  const semi = cut.lastIndexOf('; ');
+  /* Точка предпочтительнее: обрыв на точке с запятой выглядит в выдаче
+     оборванным посреди перечисления. Если резать пришлось по ней —
+     закрываем фразу точкой. */
+  if (dot > ANSWER_MAX / 2) return cut.slice(0, dot + 1);
+  if (semi > ANSWER_MAX / 2) return `${cut.slice(0, semi)}.`;
+  return `${cut.trimEnd()}…`;
 };
 
 const entryHtml = (e) => {
@@ -507,7 +536,7 @@ const pageIndex = () => {
 `;
   return layout({
     title: site.fullName,
-    description: site.description,
+    description: DESCRIPTION,
     current: 'index.html',
     canonical: '',
     body,
@@ -550,7 +579,7 @@ const pageWiki = () => {
     <div class="wiki__main">
       <div class="wiki__intro">
         <h1>Библиотека вопросов о жизни в Словении</h1>
-        <p>${entries.length} ответов со ссылками на первоисточники и датой проверки. Если вашего случая здесь нет — <a href="${site.calendly}" rel="noopener noreferrer" target="_blank">разберём на бесплатной консультации</a>.</p>
+        <p>${nAnswers(entries.length)} со ссылками на первоисточники и датой проверки. Если вашего случая здесь нет — <a href="${site.calendly}" rel="noopener noreferrer" target="_blank">разберём на бесплатной консультации</a>.</p>
       </div>
       <div class="wiki__searchbar">
         <div class="search">
@@ -583,11 +612,11 @@ const pageWiki = () => {
 `;
   return layout({
     title: `Библиотека вопросов о жизни в Словении — ${site.name}`,
-    description: `${entries.length} ответов на юридические и бытовые вопросы для россиян с ВНЖ в Словении: ${categories.map((c) => c.short.toLowerCase()).join(', ')}.`,
+    description: `${nAnswers(entries.length)} на юридические и бытовые вопросы для россиян с ВНЖ в Словении: ${categories.map((c) => c.short.toLowerCase()).join(', ')}.`,
     current: 'wiki.html',
     canonical: 'wiki.html',
     body,
-    head: `<script type="application/ld+json">${structuredData()}</script>\n`,
+    head: `<script type="application/ld+json">${faqGraph()}</script>\n`,
   });
 };
 
@@ -766,6 +795,7 @@ const page404 = () => {
     description: 'Страница не найдена.',
     current: '',
     canonical: '404.html',
+    robots: 'noindex, follow',
     body,
   });
 };
@@ -776,7 +806,7 @@ const sitemap = () => {
   const urls = ['', 'wiki.html', 'about.html', 'contacts.html', 'privacy.html'];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url>\n    <loc>${site.url}/${u}</loc>\n    <lastmod>${site.updated}</lastmod>\n  </url>`).join('\n')}
+${urls.map((u) => `  <url>\n    <loc>${site.url}/${u}</loc>\n    <lastmod>${UPDATED}</lastmod>\n  </url>`).join('\n')}
 </urlset>
 `;
 };
@@ -787,33 +817,40 @@ Allow: /
 Sitemap: ${site.url}/sitemap.xml
 `;
 
-/** Разметка Schema.org: для справочника из вопросов и ответов это главный
- *  источник понимания структуры поисковыми и ответными системами. */
-const structuredData = () =>
+/** Разметка Schema.org. Разнесена на две части намеренно: кто мы такие —
+ *  на каждой странице (главная и есть та, куда в первую очередь приходит
+ *  поиск, а раньше разметка стояла только в библиотеке), а перечень вопросов
+ *  и ответов — только там, где эти вопросы действительно есть. */
+const ORG = {
+  '@type': ['Organization', 'LegalService'],
+  '@id': `${site.url}/#org`,
+  name: site.name,
+  description: DESCRIPTION,
+  url: site.url,
+  email: site.email,
+  image: OG_IMAGE,
+  availableLanguage: ['ru'],
+  areaServed: { '@type': 'Country', name: 'Slovenia' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'C. na Brdo 85',
+    postalCode: '1000',
+    addressLocality: 'Ljubljana',
+    addressCountry: 'SI',
+  },
+};
+
+const orgGraph = () => JSON.stringify({ '@context': 'https://schema.org', '@graph': [ORG] });
+
+const faqGraph = () =>
   JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': ['Organization', 'LegalService'],
-        '@id': `${site.url}/#org`,
-        name: site.name,
-        description: site.description,
-        url: site.url,
-        email: site.email,
-        availableLanguage: ['ru'],
-        areaServed: { '@type': 'Country', name: 'Slovenia' },
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'C. na Brdo 85',
-          postalCode: '1000',
-          addressLocality: 'Ljubljana',
-          addressCountry: 'SI',
-        },
-      },
-      {
         '@type': 'FAQPage',
         '@id': `${site.url}/wiki.html#faq`,
         inLanguage: 'ru',
+        isPartOf: { '@id': `${site.url}/#org` },
         mainEntity: entries.map((e) => ({
           '@type': 'Question',
           name: e.q,

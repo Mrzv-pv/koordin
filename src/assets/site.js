@@ -68,7 +68,14 @@
 
   /* ------------------------------------------------ раскрытие по прямой ссылке */
 
-  var openFromHash = function () {
+  /* Раскрыть мало — надо ещё довести до нужного места. Браузер пытается
+     прыгнуть к фрагменту до того, как скрипт раскроет ответ, и промахивается:
+     человек по присланной ссылке оказывается в начале списка из 134 вопросов
+     и не понимает, куда попал. Кнопка «Ссылка на вопрос» ради этого и
+     существует, так что прокручиваем сами — после раскрытия и на следующем
+     кадре, когда высота ответа уже посчитана.
+     scroll-margin-top у .entry уводит цель из-под прилипшей шапки. */
+  var openFromHash = function (scroll) {
     var id = location.hash.replace('#', '');
     if (!id) return;
     var el = document.getElementById(id);
@@ -78,9 +85,24 @@
       var block = el.closest('.cat-block');
       if (block) block.hidden = false;
     }
+    if (scroll === false) return;
+    /* Прокручиваем сразу, а не из requestAnimationFrame: в фоновой вкладке
+       кадры не рисуются и колбэк не выполнится — человек вернётся к вкладке
+       и обнаружит себя в начале списка. */
+    el.scrollIntoView({ block: 'start' });
   };
-  openFromHash();
-  window.addEventListener('hashchange', openFromHash);
+
+  /* При загрузке ждём шрифты: без них высоты ответов другие, и прокрутка
+     уезжает на пару экранов. Если шрифты не отдались, всё равно прокручиваем. */
+  if (location.hash) {
+    openFromHash();
+    /* Шрифты меняют высоту ответов, и первая прокрутка уезжает на пару
+       экранов. Когда они догрузятся — наводимся ещё раз. */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { openFromHash(); }, function () {});
+    }
+  }
+  window.addEventListener('hashchange', function () { openFromHash(); });
 
   /* ------------------------------------------------ поиск по вики */
 
