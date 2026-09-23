@@ -25,6 +25,10 @@
   --surface-2:  #e8eef7;
 
   --rule:       #cad8ea;
+  /* Граница поля ввода и кнопок — это граница элемента управления, для неё
+     WCAG 1.4.11 требует 3:1 к фону. Декоративные линейки (--rule) под это
+     требование не подпадают и остаются тонкими. */
+  --control-border: #6e88ab;
   --rule-2:     #dfe8f3;
 
   --accent:     #1a63b8;
@@ -69,12 +73,13 @@
     --ink:        #e4ebf5;
     --ink-2:      #a9bbd2;
     --ink-3:      #7d90ab;
-    --ink-4:      #5e7189;
+    --ink-4:      #7285a1;
     --paper:      #0c1119;
     --paper-2:    #121924;
     --surface:    #141c28;
     --surface-2:  #1a2433;
     --rule:       #26344a;
+    --control-border: #54688a;
     --rule-2:     #1d2838;
     --accent:     #74b6f0;
     --accent-2:   #9dcdf7;
@@ -97,12 +102,13 @@
   --ink:        #e4ebf5;
   --ink-2:      #a9bbd2;
   --ink-3:      #7d90ab;
-  --ink-4:      #5e7189;
+  --ink-4:      #7285a1;
   --paper:      #0c1119;
   --paper-2:    #121924;
   --surface:    #141c28;
   --surface-2:  #1a2433;
   --rule:       #26344a;
+  --control-border: #54688a;
   --rule-2:     #1d2838;
   --accent:     #74b6f0;
   --accent-2:   #9dcdf7;
@@ -199,7 +205,9 @@ a:hover { color: var(--accent-2); }
   font-size: 15.5px; font-weight: 600;
   padding: 9px 17px;
   color: #fff; text-decoration: none; border: 0;
-  background-image: var(--grad);
+  /* Собственный градиент: общий уходит в светло-бирюзовый, на котором белый
+     текст даёт 2.2:1. Здесь обе крайние точки держат минимум 5.7:1. */
+  background-image: linear-gradient(115deg, var(--grad-1) 0%, var(--grad-2) 100%);
   background-size: 210% 100%;
   background-position: 0% 50%;
   transition: background-position .5s ease;
@@ -209,7 +217,7 @@ a:hover { color: var(--accent-2); }
 .icon-btn {
   flex: 0 0 auto; width: 34px; height: 34px;
   display: grid; place-items: center;
-  border: 1px solid var(--rule); background: transparent;
+  border: 1px solid var(--control-border); background: transparent;
   color: var(--ink-2); cursor: pointer; padding: 0;
 }
 .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -582,11 +590,18 @@ a:hover { color: var(--accent-2); }
 .search input {
   width: 100%; font-family: var(--font-ui); font-size: 18px;
   padding: 10px 40px 10px 30px;
-  border: 0; border-bottom: 1px solid var(--rule);
+  border: 0; border-bottom: 1px solid var(--control-border);
   background: transparent; color: var(--ink);
 }
 .search input::placeholder { color: var(--ink-4); }
-.search input:focus { outline: none; border-bottom-color: var(--accent); }
+/* Раньше здесь стоял голый outline: none — подсветки нижней границы мало,
+   с клавиатуры не видно, где находишься. Возвращаем видимое кольцо. */
+.search input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-bottom-color: var(--accent);
+}
+.search input:focus:not(:focus-visible) { outline: none; border-bottom-color: var(--accent); }
 .search__clear { position: absolute; right: 0; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--ink-3); cursor: pointer; width: 32px; height: 32px; display: grid; place-items: center; }
 .search__clear:hover { color: var(--ink); }
 .search__clear[hidden] { display: none; }
@@ -660,6 +675,21 @@ a:hover { color: var(--accent-2); }
 /* Источники — не служебная сноска, а часть ответа: на них держится
    всё доверие к справочнику, поэтому они стоят под текстом, а не
    в мелком подвале вместе с датой. */
+/* Вопрос — это заголовок раздела внутри страницы: без него оглавление
+   прыгало с h2 категории сразу на h4 «Что делать», и по заголовкам нельзя
+   было перемещаться от ответа к ответу. Внутри summary это допустимо;
+   собственные отступы и размер шрифта у h3 снимаем. */
+/* Текст только для скринридера: визуально скрыт, но остаётся в потоке
+   для озвучивания. clip-path вместо display:none — иначе программы чтения
+   его пропустят. */
+.vh {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+.q { margin: 0; font-size: inherit; font-weight: inherit; line-height: inherit; }
+
 .entry__sources {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px;
   margin: 16px 0 0; font-size: 14.5px; line-height: 1.5;
@@ -719,7 +749,7 @@ a:hover { color: var(--accent-2); }
 .entry__foot a:hover { color: var(--accent); }
 
 .copy-link {
-  border: 1px solid var(--rule); background: transparent; color: var(--ink-3);
+  border: 1px solid var(--control-border); background: transparent; color: var(--ink-3);
   font-family: var(--font-ui); font-size: 13.5px; padding: 4px 11px;
   cursor: pointer; margin-left: auto; white-space: nowrap;
 }

@@ -343,7 +343,7 @@ const entryHtml = (e) => {
     : '';
 
   const caveat = e.caveat
-    ? `\n            <div class="caveat">${icon('info', 16)}<p>${esc(e.caveat)}</p></div>`
+    ? `\n            <div class="caveat">${icon('info', 16)}<p><span class="vh">Важное уточнение. </span>${esc(e.caveat)}</p></div>`
     : '';
 
   const related = (e.related || []).length
@@ -396,7 +396,7 @@ const entryHtml = (e) => {
 
   return `
           <details class="entry${e.urgent ? ' is-urgent' : ''}" id="${e.id}">
-            <summary><span class="q">${esc(e.q)}</span></summary>
+            <summary><h3 class="q">${esc(e.q)}</h3></summary>
             <div class="entry__body">
               <p class="entry__lead">${esc(e.lead)}</p>${points}${next}${terms}${caveat}${sources}${related}
               <div class="entry__foot">
@@ -609,6 +609,7 @@ const pageWiki = () => {
           <button class="search__clear" type="button" aria-label="Очистить поиск" hidden>${icon('close', 17)}</button>
         </div>
         <p class="wiki__status" id="wiki-status" role="status" aria-live="polite"></p>
+        <p class="vh" id="a11y-live" role="status" aria-live="polite"></p>
       </div>
 
       ${blocks}

@@ -57,6 +57,13 @@
       var prev = btn.textContent;
       btn.textContent = 'Ссылка скопирована';
       btn.classList.add('is-done');
+      /* Подпись самой кнопки меняется молча: смену имени элемента программы
+         чтения не объявляют. Пишем в отдельную живую область. */
+      var live = document.getElementById('a11y-live');
+      if (live) {
+        live.textContent = 'Ссылка на вопрос скопирована';
+        setTimeout(function () { live.textContent = ''; }, 2000);
+      }
       setTimeout(function () { btn.textContent = prev; btn.classList.remove('is-done'); }, 1800);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
