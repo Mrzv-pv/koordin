@@ -82,6 +82,13 @@
      существует, так что прокручиваем сами — после раскрытия и на следующем
      кадре, когда высота ответа уже посчитана.
      scroll-margin-top у .entry уводит цель из-под прилипшей шапки. */
+  /* Подсветка раздела живёт ниже по файлу и пересчитывается по прокрутке.
+     Но переход по ссылке на раздел — это как раз момент, когда ждать
+     события прокрутки нельзя: прыжок мгновенный, событий может не быть
+     вовсе. Поэтому оставляем сюда крючок и дёргаем его сразу после
+     перехода. */
+  var afterJump = null;
+
   var openFromHash = function (scroll) {
     var id = location.hash.replace('#', '');
     if (!id) return;
@@ -98,6 +105,7 @@
        Из requestAnimationFrame тоже нельзя: в фоновой вкладке кадры не
        рисуются и колбэк не выполнится. */
     el.scrollIntoView({ block: 'start', behavior: 'instant' });
+    if (afterJump) afterJump();
   };
 
   /* При загрузке ждём шрифты: без них высоты ответов другие, и прокрутка
@@ -250,17 +258,96 @@
 
   /* ------------------------------------------------ подсветка раздела при прокрутке */
 
-  if ('IntersectionObserver' in window && blocks.length) {
+  /* Раньше подсветку ставил IntersectionObserver с полосой
+     «-150px сверху, -70% снизу». У него две беды.
+     Первая: активный раздел только НАЗНАЧАЛСЯ по событию «появился» и
+     никогда не пересчитывался. События приходят и от раздела, который
+     уезжает, и от следующего, побеждает последнее — подсветка садилась
+     на соседа. При проверке она ошибалась 12 раз из 12 при движении вниз.
+     Вторая: высота полосы равна 0.3 × высота окна − 150 пикселей. При
+     окне ниже 500 пикселей полоса схлопывается, и подсветка перестаёт
+     работать вообще — молча, без единой ошибки в консоли.
+     Считаем напрямую: активен последний раздел, чей верх уже прошёл
+     под шапку. Это не зависит ни от высоты окна, ни от порядка событий. */
+  if (blocks.length) {
     var setActive = function (id) {
       sidebarLinks.forEach(function (a) {
         a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
       });
     };
-    var io = new IntersectionObserver(function (items) {
-      items.forEach(function (it) {
-        if (it.isIntersecting) setActive(it.target.id);
+
+    /* Линия отсчёта должна совпадать с тем местом, куда раздел реально
+       встаёт при переходе по ссылке. Браузер складывает scroll-padding-top
+       документа и scroll-margin-top самого раздела: 84 + 150 = 234 пикселя
+       на широком экране, 185 + 190 — на узком. Линия по нижнему краю строки
+       поиска (176) оказывалась выше этой точки, и подсветка стабильно
+       отставала на один раздел. Берём обе величины из живых стилей, чтобы
+       не разъехаться при правке вёрстки. */
+    var px = function (v) { return parseFloat(v) || 0; };
+    var refLine = function (block) {
+      return (
+        px(getComputedStyle(document.documentElement).scrollPaddingTop) +
+        px(getComputedStyle(block).scrollMarginTop) +
+        8
+      );
+    };
+
+    var currentBlock = null;
+    var pick = function () {
+      var visible = blocks.filter(function (b) { return !b.hidden; });
+      if (!visible.length) return;
+      var best = visible[0];
+      visible.forEach(function (b) {
+        if (b.getBoundingClientRect().top <= refLine(b)) best = b;
       });
-    }, { rootMargin: '-150px 0px -70% 0px' });
-    blocks.forEach(function (b) { io.observe(b); });
+      /* У последнего раздела может не хватить высоты, чтобы его верх дошёл
+         до линии, — у «Срочной помощи» всего четыре вопроса. Докрутив
+         страницу до конца, подсвечиваем именно его. */
+      var atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) best = visible[visible.length - 1];
+      if (best !== currentBlock) {
+        currentBlock = best;
+        setActive(best.id);
+      }
+    };
+
+    /* Пересчёт откладываем до кадра, но не полагаемся на него одного:
+       в фоновой вкладке кадры не рисуются, колбэк не приходит, флаг очереди
+       остаётся поднятым — и подсветка умирает насовсем, уже без всякого
+       фона. Поэтому дублируем таймером: кто сработает первым, тот и считает. */
+    var queued = false;
+    var run = function () {
+      if (!queued) return;
+      queued = false;
+      pick();
+    };
+    var onScroll = function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(run);
+      setTimeout(run, 120);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    /* Поиск прячет разделы — после фильтрации набор видимых другой. */
+    input.addEventListener('input', onScroll);
+    /* Клик по разделу в боковом меню. Полагаться на hashchange нельзя:
+       если читатель уже стоит на этом разделе — например, пришёл по ссылке
+       или нажал тот же пункт второй раз, — адрес не меняется, события нет
+       и ничего не происходит. Поэтому прокручиваем сами и сразу считаем
+       подсветку, не дожидаясь события прокрутки. */
+    afterJump = pick;
+    sidebarLinks.forEach(function (a) {
+      a.addEventListener('click', function () {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        setTimeout(function () {
+          target.scrollIntoView({ block: 'start', behavior: 'instant' });
+          pick();
+        }, 0);
+      });
+    });
+    pick();
   }
 })();

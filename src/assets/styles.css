@@ -608,7 +608,7 @@ a:hover { color: var(--accent-2); }
 .wiki__status { font-size: 15px; color: var(--ink-3); margin: 9px 0 0; min-height: 22px; }
 .wiki__status mark { background: none; color: var(--accent); font-weight: 600; }
 
-.cat-block { margin-bottom: 42px; scroll-margin-top: 150px; }
+.cat-block { margin-bottom: 42px; scroll-margin-top: 100px; }
 .cat-block[hidden] { display: none; }
 .cat-block__head {
   display: flex; align-items: baseline; gap: 14px;
@@ -622,7 +622,7 @@ a:hover { color: var(--accent-2); }
 .cat-block__head .n { margin-left: auto; font-size: 14.5px; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .cat-block__blurb { color: var(--ink-3); font-size: 16px; margin: 12px 0 14px; max-width: 46rem; }
 
-.entry { border-bottom: 1px solid var(--rule-2); scroll-margin-top: 150px; }
+.entry { border-bottom: 1px solid var(--rule-2); scroll-margin-top: 100px; }
 .entry[hidden] { display: none; }
 .entry > summary {
   display: flex; gap: 13px; align-items: flex-start;
@@ -948,7 +948,10 @@ a:hover { color: var(--accent-2); }
   .sidebar .n { display: none; }
   .wiki__searchbar { top: 115px; }
   html { scroll-padding-top: 185px; }
-  .cat-block, .entry { scroll-margin-top: 190px; }
+  /* Браузер складывает scroll-padding-top документа (185) с этим отступом.
+     При 190 раздел вставал на 375 пикселях, хотя прилипшая шапка заканчивается
+     на 216: четверть экрана уходила в пустоту. */
+  .cat-block, .entry { scroll-margin-top: 47px; }
 }
 
 @media (max-width: 880px) {
