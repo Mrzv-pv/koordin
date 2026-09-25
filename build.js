@@ -420,7 +420,10 @@ const pageIndex = () => {
   const body = `
   <section class="hero hero--photo">
     <div class="hero__bg" aria-hidden="true">
-      <img src="assets/img/justice-1400.jpg" width="1400" height="933" alt="" fetchpriority="high" decoding="async">
+      <img src="assets/img/justice-1400.jpg"
+           srcset="assets/img/justice-700.jpg 700w, assets/img/justice-1400.jpg 1200w"
+           sizes="(max-width: 880px) 100vw, 1200px"
+           width="1200" height="799" alt="" fetchpriority="high" decoding="async">
     </div>
     <div class="shell hero__grid">
       <div>
@@ -497,7 +500,10 @@ const pageIndex = () => {
   </section>
 
   <section class="figure-band">
-    <img src="assets/img/consult-1400.jpg" width="1400" height="884" alt="" loading="lazy" decoding="async">
+    <img src="assets/img/consult-1400.jpg"
+         srcset="assets/img/consult-700.jpg 700w, assets/img/consult-1400.jpg 1200w"
+         sizes="(max-width: 880px) 100vw, 1200px"
+         width="1200" height="757" alt="" loading="lazy" decoding="async">
     <div class="figure-band__overlay">
       <div class="shell">
         <p>Справочник открыт и бесплатен. Консультация нужна там, где важны <em>ваши</em> документы и сроки.</p>
@@ -561,7 +567,13 @@ const pageIndex = () => {
     canonical: '',
     body,
     // герой — LCP-элемент, поэтому браузер узнаёт о картинке до разбора разметки
-    head: '<link rel="preload" as="image" href="assets/img/justice-1400.jpg" fetchpriority="high">\n',
+    /* Предзагрузка обязана повторять srcset и sizes: иначе браузер тянет
+       большой файл из href, а потом ещё и подходящий из srcset — на телефоне
+       это две картинки вместо одной. */
+    head:
+      '<link rel="preload" as="image" href="assets/img/justice-1400.jpg"' +
+      ' imagesrcset="assets/img/justice-700.jpg 700w, assets/img/justice-1400.jpg 1200w"' +
+      ' imagesizes="(max-width: 880px) 100vw, 1200px" fetchpriority="high">\n',
   });
 };
 

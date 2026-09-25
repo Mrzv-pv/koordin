@@ -46,6 +46,53 @@
     });
   }
 
+  /* ------------------------------------------------ шапка на узком экране */
+
+  /* На телефоне шапка, лента разделов и строка поиска вместе занимали
+     221 пиксель — 39% экрана 320×568. Прячем шапку, пока читатель идёт вниз,
+     и возвращаем, как только он двинулся вверх: так под текст остаётся почти
+     на четверть экрана больше, а доступ к шапке — один короткий жест. */
+  var narrow = window.matchMedia('(max-width: 960px)');
+  var headerHidden = false;
+  var lastY = window.scrollY;
+  var holdUntil = 0;
+
+  var setHeaderHidden = function (v) {
+    if (v === headerHidden) return;
+    headerHidden = v;
+    document.body.classList.toggle('is-header-hidden', v);
+  };
+
+  /* Переход по ссылке на раздел или вопрос — это прыжок, а не жест читателя.
+     Шапку показываем и ненадолго запрещаем её прятать: иначе прокрутка,
+     вызванная прыжком, тут же считалась бы движением вниз, шапка уезжала,
+     прилипшие панели меняли высоту и цель уползала из-под пальца. */
+  var showHeader = function () {
+    holdUntil = Date.now() + 600;
+    setHeaderHidden(false);
+  };
+
+  window.addEventListener(
+    'scroll',
+    function () {
+      var y = window.scrollY;
+      if (!narrow.matches) {
+        setHeaderHidden(false);
+      } else if (Date.now() < holdUntil) {
+        /* пауза после прыжка */
+      } else if (y < 140) {
+        setHeaderHidden(false);
+      } else if (y > lastY + 6) {
+        setHeaderHidden(true);
+      } else if (y < lastY - 6) {
+        setHeaderHidden(false);
+      }
+      lastY = y;
+    },
+    { passive: true }
+  );
+  narrow.addEventListener('change', function () { setHeaderHidden(false); });
+
   /* ------------------------------------------------ копирование ссылки на вопрос */
 
   document.addEventListener('click', function (e) {
@@ -104,6 +151,7 @@
        загрузки, браузер обрывает — и человек остаётся в начале списка.
        Из requestAnimationFrame тоже нельзя: в фоновой вкладке кадры не
        рисуются и колбэк не выполнится. */
+    showHeader();
     el.scrollIntoView({ block: 'start', behavior: 'instant' });
     if (afterJump) afterJump();
   };
@@ -342,6 +390,7 @@
       a.addEventListener('click', function () {
         var target = document.querySelector(a.getAttribute('href'));
         if (!target) return;
+        showHeader();
         setTimeout(function () {
           target.scrollIntoView({ block: 'start', behavior: 'instant' });
           pick();

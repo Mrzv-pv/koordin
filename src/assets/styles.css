@@ -605,7 +605,14 @@ a:hover { color: var(--accent-2); }
 .search__clear { position: absolute; right: 0; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--ink-3); cursor: pointer; width: 32px; height: 32px; display: grid; place-items: center; }
 .search__clear:hover { color: var(--ink); }
 .search__clear[hidden] { display: none; }
+/* min-height держала место, чтобы строка результатов не дёргала вёрстку.
+   Но строка живёт внутри ПРИЛИПШЕЙ полосы поиска и пустует почти всё время,
+   а место занимает всегда: 22 пикселя плюс 9 отступа. На экране 320×568
+   прилипшие панели и без того съедали 39% высоты. Пока текста нет —
+   схлопываем; элемент остаётся в разметке, поэтому программы чтения
+   объявляют появившийся текст как и раньше. */
 .wiki__status { font-size: 15px; color: var(--ink-3); margin: 9px 0 0; min-height: 22px; }
+.wiki__status:empty { margin: 0; min-height: 0; height: 0; overflow: hidden; }
 .wiki__status mark { background: none; color: var(--accent); font-weight: 600; }
 
 .cat-block { margin-bottom: 42px; scroll-margin-top: 100px; }
@@ -724,7 +731,20 @@ a:hover { color: var(--accent-2); }
 .related a:hover { color: var(--accent); border-bottom-color: var(--accent-wash); }
 .related a:not(:last-child)::after { content: " ·"; color: var(--ink-4); border-bottom: 0; }
 
-.term { font-size: 13.5px; padding: 2px 9px; background: var(--slate-wash); color: var(--slate); white-space: nowrap; }
+/* Плашки со словенскими терминами. nowrap стоял, чтобы короткий термин
+   не разрывался посередине, но термины бывают длинные: «Javni štipendijski,
+   razvojni, invalidski in preživninski sklad RS» — 65 знаков. Такая плашка
+   не влезает в телефон и раздвигает всю страницу: при экране 360 макет
+   уезжал на 425 и появлялась горизонтальная прокрутка по всему сайту.
+   Из 928 терминов длиннее 28 знаков — 144, так что это не исключение.
+   Разрешаем перенос по пробелам, а неразрывный кусок длиннее строки
+   ломаем принудительно: обрезанный термин бесполезен. */
+.term {
+  font-size: 13.5px; padding: 2px 9px;
+  background: var(--slate-wash); color: var(--slate);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
 
 .caveat {
   display: flex; gap: 11px; margin-top: 16px;
@@ -947,11 +967,29 @@ a:hover { color: var(--accent-2); }
   .sidebar a.is-active { border-left: 0; border-bottom-color: var(--accent); }
   .sidebar .n { display: none; }
   .wiki__searchbar { top: 115px; }
+
+  /* Шапка уезжает при прокрутке вниз и возвращается при прокрутке вверх.
+     На экране 320×568 прилипшие панели занимали 221 пиксель — 39% высоты,
+     и на чтение оставалось меньше двух третей экрана. Прятать ленту разделов
+     или поиск нельзя, ими пользуются на ходу, а шапка нужна редко: по жесту
+     вверх она возвращается мгновенно. Ссылка на запись при этом не теряется —
+     она есть и во вступлении, и в подвале. */
+  .site-header { transition: transform .2s ease; }
+  body.is-header-hidden .site-header { transform: translateY(-101%); }
+  /* Лента и поиск переезжают вместе с шапкой. Без общего перехода они
+     прыгали мгновенно, пока шапка ещё ехала, и на долю секунды в верху
+     экрана открывалась щель с текстом под ней. */
+  .sidebar, .wiki__searchbar { transition: top .2s ease; }
+  body.is-header-hidden .sidebar { top: 0; }
+  body.is-header-hidden .wiki__searchbar { top: 49px; }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header, .sidebar, .wiki__searchbar { transition: none; }
+  }
   html { scroll-padding-top: 185px; }
   /* Браузер складывает scroll-padding-top документа (185) с этим отступом.
      При 190 раздел вставал на 375 пикселях, хотя прилипшая шапка заканчивается
      на 216: четверть экрана уходила в пустоту. */
-  .cat-block, .entry { scroll-margin-top: 47px; }
+  .cat-block, .entry { scroll-margin-top: 16px; }
 }
 
 @media (max-width: 880px) {
@@ -977,18 +1015,32 @@ a:hover { color: var(--accent-2); }
      не трогаем, чтобы не сломать разметку. */
   .related a::after { position: static; transform: none; height: auto; }
 
-  /* комфортные цели для пальца: ссылки-строки получают вертикальный отступ */
+  /* Комфортные цели для пальца. Отступы были подобраны на глаз и не дотягивали:
+     ссылки подвала давали 39 пикселей, контакты — 34, «Вся библиотека» — 41
+     при норме 44. Здесь, в отличие от шапки, цели стоят в столбик вплотную,
+     поэтому растягивать зону нажатия псевдоэлементом нельзя — соседние строки
+     начали бы перехватывать касание. Увеличиваем настоящие отступы: строки
+     становятся выше и заодно расходятся. */
   .site-footer ul { gap: 2px; }
-  .site-footer a { display: inline-block; padding-block: 7px; }
+  .site-footer a { display: inline-block; padding-block: 10px; }
   .section__head .more,
-  .urgent a { display: inline-block; padding-block: 8px; }
-  .contact-lines dd a { display: inline-block; padding-block: 4px; }
+  .urgent a { display: inline-block; padding-block: 10px; }
+  .contact-lines dd a { display: inline-block; padding-block: 10px; }
 }
 
 @media (max-width: 560px) {
   :root { --gutter: 18px; }
   body { font-size: 16.5px; }
   .entry__body { padding-left: 0; }
+
+  /* Кегль ответов задан для широкого экрана. На телефоне при 18.5 пикселях
+     в строку помещалось 38 знаков (замерено по разбивке строк, не прикидкой),
+     а читается спокойно от 45. Убавляем до 17 — строка растёт примерно до 41,
+     и всё остаётся крупнее 16 пикселей, ниже которых iOS принудительно
+     увеличивает страницу и текст становится мелким для чтения с рук. */
+  .entry__lead { font-size: 17px; }
+  .entry__points li { font-size: 16.5px; }
+  .entry__next li { font-size: 16.5px; }
   .copy-link { margin-left: 0; }
   .hero__facts { gap: 0 24px; }
   .slip dl > div { grid-template-columns: 7rem 1fr; gap: 10px; }
