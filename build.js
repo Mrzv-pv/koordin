@@ -145,7 +145,7 @@ ${head}</head>
   <div class="shell site-header__row">
     <a class="brand" href="index.html"><b>${esc(site.name)}</b><span>${esc(site.tagline)}</span></a>
     <button class="icon-btn nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">${icon('menu')}</button>
-    <nav class="nav" id="site-nav" aria-label="Основная навигация">
+    <nav class="nav" id="site-nav" aria-label="Основная навигация" hidden>
       ${NAV_LINKS.map(([href, label]) => `<a href="${href}"${current === href ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('\n      ')}
     </nav>
     <a class="header-cta" href="${site.calendly}" rel="noopener noreferrer" target="_blank">Записаться</a>

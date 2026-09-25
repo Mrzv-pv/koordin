@@ -195,6 +195,12 @@ a:hover { color: var(--accent-2); }
 .brand span { font-size: 13.5px; color: var(--ink-3); border-left: 1px solid var(--rule); padding-left: 9px; }
 @media (max-width: 700px) { .brand span { display: none; } }
 
+/* display: flex здесь важнее, чем кажется: в разметке у меню стоит hidden,
+   чтобы на телефоне панель не висела раскрытой, пока не отработает
+   отложенный скрипт (страница библиотеки — почти мегабайт, первые экраны
+   рисуются заметно раньше), и чтобы она не висела вовсе при выключенном JS.
+   На широком экране это правило перебивает браузерное [hidden] и меню
+   остаётся видимым; на узком его перекрывает .nav[hidden] ниже. */
 .nav { margin-left: auto; display: flex; align-items: center; gap: 22px; }
 .nav a { font-size: 16px; color: var(--ink-2); text-decoration: none; padding-block: 4px; border-bottom: 2px solid transparent; }
 .nav a:hover { color: var(--ink); border-bottom-color: var(--rule); }
@@ -1021,6 +1027,25 @@ a:hover { color: var(--accent-2); }
   /* У разделов уже есть ::after со средней точкой-разделителем — там зону
      не трогаем, чтобы не сломать разметку. */
   .related a::after { position: static; transform: none; height: auto; }
+
+  /* Источники под ответом — 454 ссылки на странице, и это самая мелкая
+     россыпь целей на сайте: высота 23 пикселя, а у номеров в группе
+     («FURS 2 3 4») ширина падала до 6. Попасть в цифру «3», когда рядом
+     в шести пикселях стоит «2», нельзя. На телефоне превращаем их в плашки:
+     минимум 32×32 с зазором 10 — это выше порога WCAG 2.5.8 и не ломает
+     строку, потому что плашки переносятся. Разделители-точки убираем:
+     у плашек своя граница, точка между ними только путает. */
+  .entry__sources { gap: 10px; }
+  .entry__sources a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 32px; min-width: 32px;
+    padding: 4px 9px;
+    background: var(--slate-wash);
+    border-bottom: 0;
+  }
+  .entry__sources a:not(:last-child)::after { content: none; }
+  .src-group { gap: 10px; }
+  .src-group a:not(:last-child)::after { content: none; }
 
   /* Комфортные цели для пальца. Отступы были подобраны на глаз и не дотягивали:
      ссылки подвала давали 39 пикселей, контакты — 34, «Вся библиотека» — 41
