@@ -30,13 +30,19 @@
 
   var navBtn = document.querySelector('.nav-toggle');
   var nav = document.getElementById('site-nav');
+  /* Состояние меню нужно прячущейся шапке: пока меню открыто, шапку убирать
+     нельзя — вместе с ней уедет и кнопка, которой меню закрывают. */
+  var navIsOpen = false;
   if (navBtn && nav) {
     var setNav = function (open) {
       nav.hidden = !open;
       navBtn.setAttribute('aria-expanded', String(open));
+      navIsOpen = open && mq.matches;
     };
-    // на десктопе меню всегда видно; hidden ставим только когда кнопка на экране
-    var mq = window.matchMedia('(max-width: 860px)');
+    /* Порог должен совпадать с CSS, где кнопка меню появляется при 880px.
+       Стояло 860: в полосе 861–880 кнопка уже была на экране, а скрипт
+       считал ширину десктопной и держал меню раскрытым всегда. */
+    var mq = window.matchMedia('(max-width: 880px)');
     var sync = function () { setNav(!mq.matches ? true : false); };
     sync();
     mq.addEventListener('change', sync);
@@ -44,7 +50,51 @@
     nav.addEventListener('click', function (e) {
       if (e.target.tagName === 'A' && mq.matches) setNav(false);
     });
+    /* Закрыть меню с клавиатуры и возвращая фокус на кнопку. */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navIsOpen) {
+        setNav(false);
+        navBtn.focus();
+      }
+    });
   }
+
+  /* ------------------------------------------------ отступ под прилипшей шапкой */
+
+  /* scroll-padding-top задавался в CSS числом — 84 на широком экране, 185 на
+     узком. Но высота прилипшего блока не постоянна: строка «Найдено: N»
+     появляется только при поиске и добавляет 32 пикселя, а шапка на телефоне
+     уезжает и отнимает 67. С активным поиском заголовок раздела уезжал на
+     16 пикселей ПОД панель — то есть переход приводил туда, где нужного
+     заголовка не видно. Меряем живьём: у прилипшего элемента низ равен
+     его top плюс высота. */
+  var stickyEls = function () {
+    return ['.site-header', '.sidebar', '.wiki__searchbar']
+      .map(function (sel) { return document.querySelector(sel); })
+      .filter(Boolean)
+      .filter(function (el) { return getComputedStyle(el).position === 'sticky'; });
+  };
+
+  var syncScrollPadding = function () {
+    var bottom = 0;
+    stickyEls().forEach(function (el) {
+      if (el.classList.contains('site-header') && document.body.classList.contains('is-header-hidden')) return;
+      /* Считаем только полосы сверху. На широком экране боковое меню тоже
+         прилипшее, но это высокая КОЛОНКА сбоку: её высота давала отступ
+         в 644 пикселя, и раздел уезжал на два экрана вниз.
+         Отличаем по высоте, а не по ширине: полоса низкая, колонка высокая.
+         Ширина обманчива — строка поиска стоит внутри полей и на экране 320
+         занимает 284 пикселя, то есть проверку «во всю ширину» не проходит. */
+      if (el.offsetHeight > window.innerHeight * 0.4) return;
+      var top = parseFloat(getComputedStyle(el).top);
+      if (isNaN(top)) return;
+      bottom = Math.max(bottom, top + el.offsetHeight);
+    });
+    /* Подстраховка от неожиданной вёрстки: под шапку не отдаём больше
+       половины экрана, иначе переход уводит цель за пределы видимого. */
+    bottom = Math.min(bottom, Math.round(window.innerHeight / 2));
+    if (bottom > 0) document.documentElement.style.scrollPaddingTop = Math.round(bottom) + 'px';
+  };
 
   /* ------------------------------------------------ шапка на узком экране */
 
@@ -61,6 +111,7 @@
     if (v === headerHidden) return;
     headerHidden = v;
     document.body.classList.toggle('is-header-hidden', v);
+    syncScrollPadding();
   };
 
   /* Переход по ссылке на раздел или вопрос — это прыжок, а не жест читателя.
@@ -70,6 +121,7 @@
   var showHeader = function () {
     holdUntil = Date.now() + 600;
     setHeaderHidden(false);
+    syncScrollPadding();
   };
 
   window.addEventListener(
@@ -77,6 +129,10 @@
     function () {
       var y = window.scrollY;
       if (!narrow.matches) {
+        setHeaderHidden(false);
+      } else if (navIsOpen) {
+        /* Меню открыто: спрятать шапку — значит унести кнопку, которой меню
+           закрывают, и оставить висеть панель, от которой не избавиться. */
         setHeaderHidden(false);
       } else if (Date.now() < holdUntil) {
         /* пауза после прыжка */
@@ -91,7 +147,9 @@
     },
     { passive: true }
   );
-  narrow.addEventListener('change', function () { setHeaderHidden(false); });
+  narrow.addEventListener('change', function () { setHeaderHidden(false); syncScrollPadding(); });
+  window.addEventListener('resize', syncScrollPadding);
+  syncScrollPadding();
 
   /* ------------------------------------------------ копирование ссылки на вопрос */
 
@@ -379,7 +437,7 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     /* Поиск прячет разделы — после фильтрации набор видимых другой. */
-    input.addEventListener('input', onScroll);
+    input.addEventListener('input', function () { onScroll(); syncScrollPadding(); });
     /* Клик по разделу в боковом меню. Полагаться на hashchange нельзя:
        если читатель уже стоит на этом разделе — например, пришёл по ссылке
        или нажал тот же пункт второй раз, — адрес не меняется, события нет

@@ -602,7 +602,10 @@ a:hover { color: var(--accent-2); }
   border-bottom-color: var(--accent);
 }
 .search input:focus:not(:focus-visible) { outline: none; border-bottom-color: var(--accent); }
-.search__clear { position: absolute; right: 0; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--ink-3); cursor: pointer; width: 32px; height: 32px; display: grid; place-items: center; }
+/* 44×44 — норма для пальца. Кнопка стоит в прилипшей панели поверх поля,
+   поэтому растим её саму, а не зону псевдоэлементом: иконка остаётся
+   прежнего размера, увеличивается только область нажатия. */
+.search__clear { position: absolute; right: -6px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--ink-3); cursor: pointer; width: 44px; height: 44px; display: grid; place-items: center; }
 .search__clear:hover { color: var(--ink); }
 .search__clear[hidden] { display: none; }
 /* min-height держала место, чтобы строка результатов не дёргала вёрстку.
@@ -615,7 +618,7 @@ a:hover { color: var(--accent-2); }
 .wiki__status:empty { margin: 0; min-height: 0; height: 0; overflow: hidden; }
 .wiki__status mark { background: none; color: var(--accent); font-weight: 600; }
 
-.cat-block { margin-bottom: 42px; scroll-margin-top: 100px; }
+.cat-block { margin-bottom: 42px; scroll-margin-top: 16px; }
 .cat-block[hidden] { display: none; }
 .cat-block__head {
   display: flex; align-items: baseline; gap: 14px;
@@ -629,7 +632,7 @@ a:hover { color: var(--accent-2); }
 .cat-block__head .n { margin-left: auto; font-size: 14.5px; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .cat-block__blurb { color: var(--ink-3); font-size: 16px; margin: 12px 0 14px; max-width: 46rem; }
 
-.entry { border-bottom: 1px solid var(--rule-2); scroll-margin-top: 100px; }
+.entry { border-bottom: 1px solid var(--rule-2); scroll-margin-top: 16px; }
 .entry[hidden] { display: none; }
 .entry > summary {
   display: flex; gap: 13px; align-items: flex-start;
@@ -855,11 +858,17 @@ a:hover { color: var(--accent-2); }
 .consent__more { grid-area: more; justify-self: start; margin-top: 6px; font-size: 15px; }
 .consent__row {
   grid-area: actions;
-  display: flex; gap: 10px; align-self: center;
+  display: flex; flex-wrap: wrap; gap: 10px; align-self: center;
 }
-/* Одинаковые по весу: ни один вариант не выделен. */
+/* Одинаковые по весу: ни один вариант не выделен.
+   min-width: 9.5rem — это 152 пикселя; две кнопки и зазор требуют 314,
+   а на экране 320 под содержимое остаётся 284. Кнопка «Принять» уходила
+   за правый край и была обрезана: на баннере согласия так нельзя — обе
+   возможности должны быть доступны одинаково. Разрешаем ряду переноситься,
+   кнопке — сжиматься до ширины ряда: на узком экране они встают друг под
+   друга, обе во всю ширину, вес по-прежнему одинаковый. */
 .consent__btn {
-  min-height: 44px; min-width: 9.5rem;
+  min-height: 44px; flex: 1 1 9.5rem; min-width: 0;
   padding: 11px 22px;
   font-family: var(--font-ui); font-size: 16px; font-weight: 600;
   color: var(--ink); background: transparent;
@@ -986,10 +995,8 @@ a:hover { color: var(--accent-2); }
     .site-header, .sidebar, .wiki__searchbar { transition: none; }
   }
   html { scroll-padding-top: 185px; }
-  /* Браузер складывает scroll-padding-top документа (185) с этим отступом.
-     При 190 раздел вставал на 375 пикселях, хотя прилипшая шапка заканчивается
-     на 216: четверть экрана уходила в пустоту. */
-  .cat-block, .entry { scroll-margin-top: 16px; }
+  /* Высоту прилипшей шапки теперь меряет скрипт и кладёт в scroll-padding-top,
+     поэтому здесь остаётся только зазор под ней — одинаковый на всех ширинах. */
 }
 
 @media (max-width: 880px) {
@@ -1041,6 +1048,14 @@ a:hover { color: var(--accent-2); }
   .entry__lead { font-size: 17px; }
   .entry__points li { font-size: 16.5px; }
   .entry__next li { font-size: 16.5px; }
+  /* Та же беда на текстовых страницах: 18 пикселей давали 32 знака в строке
+     при ширине 320. Ниже 17 не опускаемся — начинается мелкий шрифт. */
+  .prose p, .prose li { font-size: 17px; }
+
+  /* Контакты стояли в две колонки: 7.5rem под ярлык — это 120 пикселей,
+     и при ширине 320 под саму почту оставалось 148. Ярлык «Почта» столько
+     не нужен, а адрес и телефон в 148 пикселях рвутся. Ставим в столбик. */
+  .contact-lines > div { grid-template-columns: 1fr; gap: 2px; }
   .copy-link { margin-left: 0; }
   .hero__facts { gap: 0 24px; }
   .slip dl > div { grid-template-columns: 7rem 1fr; gap: 10px; }
